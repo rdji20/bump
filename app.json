@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "Capstone",
+    "slug": "Capstone",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
