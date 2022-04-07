@@ -2,6 +2,7 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { View, Text, Image, StyleSheet, Pressable } from 'react-native';
 import React, { useState } from 'react';
+import Card from '../sharedComponents/card' 
 
 export function ProfileScreen() {
 
@@ -11,8 +12,15 @@ export function ProfileScreen() {
 
     const SavedCards = () => {
         return (<View style={{width: '100%', height: '100%'}}>
-                    <Text>Here are my saved cards</Text>
-                </View>)
+            <Card>
+                <View style={{width: '100%', height:'85%'}}>
+                    <Image style= {{flex:1 , width: undefined, height: undefined}} source={require('../../images/Snoqualmie_Falls.png')}/>
+                </View>
+                <Text style={{flex:1}}>Snoqualmie Falls</Text>
+            </Card>
+
+                    
+        </View>)
     }
 
     const MyCards = () => {
@@ -91,5 +99,12 @@ const styles = StyleSheet.create({
         padding: 5,
         borderRadius: 50,
         margin: 3
+    },
+
+    savedCardImg: {
+        maxWidth: 5,
+        maxHeight: 5,
+
     }
+
 })
