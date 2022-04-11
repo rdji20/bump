@@ -11,21 +11,42 @@ export function ProfileScreen() {
     [tabState, setTabState] = useState(false);
 
     const SavedCards = () => {
-        return (<View style={{width: '100%', height: '100%'}}>
-            <Card>
-                <View style={{width: '100%', height:'85%'}}>
-                    <Image style= {{flex:1 , width: undefined, height: undefined}} source={require('../../images/Snoqualmie_Falls.png')}/>
-                </View>
-                <Text style={{flex:1}}>Snoqualmie Falls</Text>
-            </Card>
+        return (<View style={{flexDirection: 'row', justifyContent:'start', alignItems: 'left', width: '100%', height: '100%'}}>
+                    <Card>
+                        <View style={{width: '100%', height:'85%'}}>
+                            <Image style= {{flex:1 , width: undefined, height: undefined}} source={require('../../images/Snoqualmie_Falls.png')}/>
+                        </View>
+                        <Text style={{flex:1}}>Snoqualmie Falls</Text>
+                    </Card>
 
-                    
-        </View>)
+                    <Card>
+                        <View style={{width: '100%', height:'85%'}}>
+                            <Image style= {{flex:1 , width: undefined, height: undefined}} source={require('../../images/food-and-drink.png')}/>
+                        </View>
+                        <Text style={{flex:1}}>Food and Drinks</Text>
+                    </Card>
+
+                </View>)
     }
 
     const MyCards = () => {
-        return (<View style={{flexDirection: 'row', justifyContent:'center', alignItems: 'center', width: '100%', height: '66%'}} >
-                    <Text>No Cards Yet</Text>
+        return (<View style={{flexDirection: 'row', justifyContent:'start', alignItems: 'left', width: '100%', height: '66%'}} >
+                    <Card>
+                        <View style={{width: '100%', height:'85%'}}>
+                            {<Image style= {{flex:1 , width: undefined, height: undefined}} source={require('../../images/KerryPark.png')}/>}
+                        </View>
+                        <Text style={{flex:1}}>Enjoy Seattle's View</Text>
+                    </Card>
+
+                    <Card>
+                        <View style={{width: '100%', height:'85%'}}>
+                            <Image style= {{flex:1 , width: undefined, height: undefined}} source={require('../../images/candle.png')}/>
+                        </View>
+                        <Text style={{flex:1}}>Make a candle</Text>
+                    </Card>
+
+                    
+                    
                 </View>)
     }
 
@@ -40,9 +61,9 @@ export function ProfileScreen() {
     return(
         <View style={styles.main}>
                 <View style={{flexDirection: 'row', justifyContent: 'center', paddingTop: 15}}>
-                    <Image style={styles.pfp} source={require('../../images/pfp.jpg')} />
+                    <Image style={styles.pfp} source={require('../../images/sample-sarah.png')} />
                     <View style={{justifyContent: 'center', padding: 15}}>
-                        <Text style={styles.name}>Neema Shokri</Text>
+                        <Text style={styles.name}>Sarah Hayes</Text>
                         <Text style={styles.stats}>0 Points</Text>
                         <Text style={styles.stats}>0 Acheivements</Text>
                     </View>
@@ -51,6 +72,7 @@ export function ProfileScreen() {
                     <Text style={styles.tag}>Foodie </Text>
                     <Text style={styles.tag}>animal lover</Text>
                     <Text style={styles.tag}>Cooking/Baking</Text>
+                    
                 </View>
             <View style={{flexDirection: 'row', justifyContent: 'center'}}>
                 <Pressable style={(tabState) ? styles.activeButton : styles.button} title="Saved Cards" onPress={selectSavedCards}><Text>Saved Cards</Text></Pressable>
@@ -94,7 +116,7 @@ const styles = StyleSheet.create({
         borderRadius: 60 
     },
     tag: {
-        backgroundColor: 'lightgray',
+        backgroundColor: '#BEA4F5',
         fontSize: 16,
         padding: 5,
         borderRadius: 50,
