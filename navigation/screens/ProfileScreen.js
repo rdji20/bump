@@ -1,8 +1,9 @@
 
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { View, Text, Image, StyleSheet, Pressable } from 'react-native';
+import { View, Text, Image, StyleSheet, Pressable, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
 import Card from '../sharedComponents/card' 
+
 
 export function ProfileScreen() {
 
@@ -79,6 +80,10 @@ export function ProfileScreen() {
                 <Pressable style={(!tabState) ? styles.activeButton : styles.button} title="My Cards" onPress={selectMyCards}><Text>My Cards</Text></Pressable>
             </View>
             {tabState ? <SavedCards /> : <MyCards />}
+
+            <TouchableOpacity style={styles.touchableOpacity}>
+                <Image style={styles.floatingButton} source={require('../../images/addButton.png')}/>
+            </TouchableOpacity>
         </View>
     )
 }
@@ -127,6 +132,29 @@ const styles = StyleSheet.create({
         maxWidth: 5,
         maxHeight: 5,
 
+    },
+
+    touchableOpacity: {
+        position: 'absolute',
+        width: 50,
+        height: 50,
+        borderRadius: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+        right: 30,
+        bottom: 30,
+        backgroundColor: '#8664F6',
+        elevation: 3,
+        shadowOffset: {width: 1, height: 1},
+        shadowColor: '#333',
+        shadowOpacity: 0.3,
+        shadowRadius: 5
+    },
+
+    floatingButton: {
+        resizeMode: 'contain',
+        width: 25,
+        height:25
     }
 
 })
