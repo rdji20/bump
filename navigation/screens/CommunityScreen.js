@@ -1,10 +1,11 @@
+import React from 'react'
+import { View, Text} from 'react-native';
 
-import { View, Text } from 'react-native';
 
 export function CommunityScreen() {
     return(
-        <View>
-            <Text>This is a test</Text>
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <Text>This is community screen.</Text>
         </View>
     )
 }
