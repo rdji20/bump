@@ -3,6 +3,7 @@ import {View, Text, Image, TextInput, Button} from 'react-native'
 import * as Yup from 'yup'
 import {Formik} from 'formik'
 import { Divider } from '@rneui/themed';
+import * as ImagePicker from 'expo-image-picker';
 
 
 
@@ -16,11 +17,27 @@ const uploadPostSchema = Yup.object().shape({
 const FormikPostUploader = () => {
     const [thumbnailUrl, setThumbnailUrl] = useState(PLACEHOLDER_IMG)
     
+    const [image, setImage] = useState(null);
 
+    const pickImage = async () => {
+      // No permissions request is necessary for launching the image library
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: false,
+        aspect: [4, 3],
+        quality: 1,
+      });
+  
+      console.log(result);
+  
+      if (!result.cancelled) {
+        setImage(result.uri);
+      }
+    };
 
     return (
         <Formik
-            initialValues = {{caption: '', imageUrl: ''}}
+            initialValues = {{caption: '', imageUrl: '', image: ''}}
             onSubmit={(values) => console.log(values)}
             validationSchema={uploadPostSchema}
             validateOnMount={true}
@@ -29,7 +46,7 @@ const FormikPostUploader = () => {
                 <>
                     <View style={{margin: 20, justifyContent: 'space-between', flexDirection: 'row'}}>
                         <Image 
-                            source={{uri: thumbnailUrl ? thumbnailUrl : PLACEHOLDER_IMG}} 
+                            source={{uri: image ? image : PLACEHOLDER_IMG}} 
                             style={{width: 100, height:100}}
                         />
                     <View style={{flex:1, marginLeft: 12}}>
@@ -42,6 +59,7 @@ const FormikPostUploader = () => {
                             onBlur={handleBlur('caption')}
                             value={(values.caption)}
                         />
+
                     </View>
 
                     </View>
@@ -58,6 +76,8 @@ const FormikPostUploader = () => {
                         value={values.imageUrl}
                     />
 
+
+
                     
                     {errors.imageUrl && (
                         <Text style={{fontSize: 10, color: 'red'}}>
@@ -67,6 +87,9 @@ const FormikPostUploader = () => {
 
                     <Button onPress={handleSubmit} title='Post' disabled={!isValid}/>
                     
+                    <Button title='choose image' onPress={pickImage}/>
+                    {/*{image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}*/}
+
                 </> 
             )}
 
