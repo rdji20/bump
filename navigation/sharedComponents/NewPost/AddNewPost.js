@@ -16,7 +16,7 @@ const Header = () => (
                 style= {{width:30, height: 30}}
             />
         </TouchableOpacity>
-        <Text style={styles.headerText}>NEW POST</Text>
+        <Text style={styles.headerText}>NEW CARD</Text>
         <Text></Text>
     </View>
 )
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     },
 
     headerText: {
-        color: 'black',
+        color: '#543F9B',
         fontWeight: '700',
         fontSize: 20,
         marginRight: 23,
