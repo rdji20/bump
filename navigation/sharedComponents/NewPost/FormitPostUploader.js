@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {View, Text, Image, TextInput, Button} from 'react-native'
+import {View, Text, Image, TextInput, Button, TouchableOpacity} from 'react-native'
 import * as Yup from 'yup'
 import {Formik} from 'formik'
 import { Divider } from '@rneui/themed';
@@ -8,6 +8,7 @@ import * as ImagePicker from 'expo-image-picker';
 
 
 const PLACEHOLDER_IMG = 'http://www.placecage.com/200/300'
+
 
 const uploadPostSchema = Yup.object().shape({
     title: Yup.string().max(2200, 'title has reached the character limit.') 
@@ -27,10 +28,11 @@ const FormikPostUploader = () => {
         quality: 1,
       });
   
-      console.log(result);
+      //console.log(result);
   
       if (!result.cancelled) {
         setImage(result.uri);
+
       }
     };
 
@@ -43,14 +45,21 @@ const FormikPostUploader = () => {
         >
             {({handleBlur, handleChange, handleSubmit, values, errors, isValid}) => (
                 <>
+                    <View style={{alignItems: 'center', margin:50}}>
+                        
 
+                        <TouchableOpacity onPress={pickImage}>
+                        <Image
+                            source={{uri: image ? image: PLACEHOLDER_IMG}}
+                            style={{width: image ? 150: 0, height: image ? 150: 0, margin: image ? 20:0, opacity: image ? 1 : 0}}
+                        />
+                        </TouchableOpacity>
 
-                    <View style={{alignItems: 'center', margin:30}}>
-                        <Image 
-                            source={{uri: image ? image : PLACEHOLDER_IMG}} 
-                            style={{width: 150, height: 150}}
-                        /> 
-                        <Button title='choose image' onPress={pickImage}/>
+                        <TouchableOpacity  onPress={pickImage}>
+                            <Image style={{resizeMode: 'contain', width: image ? 0: 60,height: image ? 0: 60, opacity: image ? 0 : 1, margin: image ? 0: 20}} 
+                                        source={require('../../../images/flat-color-icons_add-image.png')}/>
+                        </TouchableOpacity>
+                        
                     </View>
                     
                     <Divider width={0.2} orientation='vertical'/>
