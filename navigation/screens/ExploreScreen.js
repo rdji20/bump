@@ -1,7 +1,13 @@
+<<<<<<< HEAD
 
 import { View, Text, Image, ScrollView, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Entypo, MaterialCommunityIcons, Ionicons, Foundation, Feather } from '@expo/vector-icons';
+=======
+import { View, Text, SafeAreaView } from 'react-native';
+import AddNewPost from '../sharedComponents/NewPost/AddNewPost'
+import FormikPostUploader from '../sharedComponents/NewPost/FormitPostUploader'
+>>>>>>> 0a4270dd99532a69247af0312de725c67d9c2dcb
 
 export function ExploreScreen() {
 
