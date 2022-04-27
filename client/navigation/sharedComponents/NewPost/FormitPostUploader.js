@@ -15,7 +15,7 @@ const uploadPostSchema = Yup.object().shape({
     desc: Yup.string().max(2200, 'description has reached the character limit.')
 })
 
-const FormikPostUploader = () => {
+export const FormikPostUploader = () => {
     
     const [image, setImage] = useState(null);
 
