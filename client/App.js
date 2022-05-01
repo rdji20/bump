@@ -8,11 +8,6 @@ export default function App() {
   useEffect(() => {
     RequestManager.getDeviceId()
       .then(deviceId => global.deviceId = deviceId)
-      .then(() => {
-        RequestManager.removeFromDislikedCards(1);
-        RequestManager.removeFromMyCards(1);
-        RequestManager.removeFromSavedCards(1);
-      })
   }, []);
   return <MyTabs />
 }
