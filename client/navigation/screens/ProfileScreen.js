@@ -12,7 +12,7 @@ export function ProfileScreen() {
     [tabState, setTabState] = useState(false);
 
     const SavedCards = () => {
-        return (<View style={{flexDirection: 'row', justifyContent:'start', alignItems: 'left', width: '100%', height: '100%'}}>
+        return (<View style={{flexDirection: 'row', justifyContent:'start', alignItems: 'left', width: '100%', height: '100%',flexWrap: 1}}>
                     <Card>
                         <View style={{width: '100%', height:'85%'}}>
                             <Image style= {{flex:1 , width: undefined, height: undefined}} source={require('../../images/Snoqualmie_Falls.png')}/>
@@ -24,19 +24,26 @@ export function ProfileScreen() {
                         <View style={{width: '100%', height:'85%'}}>
                             <Image style= {{flex:1 , width: undefined, height: undefined}} source={require('../../images/food-and-drink.png')}/>
                         </View>
-                        <Text style={{flex:1}}>Food and Drinks</Text>
+                        <Text style={{flex:1}}>Food and Drink</Text>
                     </Card>
 
                 </View>)
     }
 
     const MyCards = () => {
-        return (<View style={{flexDirection: 'row', justifyContent:'start', alignItems: 'left', width: '100%', height: '66%'}} >
+        return (<View style={{flexDirection: 'row', justifyContent:'start', alignItems: 'left', width: '100%', height: '66%', flexWrap: 1}} >
                     <Card>
                         <View style={{width: '100%', height:'85%'}}>
                             {<Image style= {{flex:1 , width: undefined, height: undefined}} source={require('../../images/KerryPark.png')}/>}
                         </View>
                         <Text style={{flex:1}}>Enjoy Seattle's View</Text>
+                    </Card>
+
+                    <Card>
+                        <View style={{width: '100%', height:'85%'}}>
+                            <Image style= {{flex:1 , width: undefined, height: undefined}} source={require('../../images/candle.png')}/>
+                        </View>
+                        <Text style={{flex:1}}>Make a candle</Text>
                     </Card>
 
                     <Card>
@@ -60,7 +67,9 @@ export function ProfileScreen() {
     }
 
     return(
+        
         <View style={styles.main}>
+        {/*
                 <View style={{flexDirection: 'row', justifyContent: 'center', paddingTop: 15}}>
                     <Image style={styles.pfp} source={require('../../images/sample-sarah.png')} />
                     <View style={{justifyContent: 'center', padding: 15}}>
@@ -75,15 +84,18 @@ export function ProfileScreen() {
                     <Text style={styles.tag}>Cooking/Baking</Text>
                     
                 </View>
+        */}
             <View style={{flexDirection: 'row', justifyContent: 'center'}}>
                 <Pressable style={(tabState) ? styles.activeButton : styles.button} title="Saved Cards" onPress={selectSavedCards}><Text>Saved Cards</Text></Pressable>
                 <Pressable style={(!tabState) ? styles.activeButton : styles.button} title="My Cards" onPress={selectMyCards}><Text>My Cards</Text></Pressable>
             </View>
             {tabState ? <SavedCards /> : <MyCards />}
 
+        {/*
             <TouchableOpacity style={styles.touchableOpacity}>
                 <Image style={styles.floatingButton} source={require('../../images/addButton.png')}/>
             </TouchableOpacity>
+        */}
         </View>
     )
 }
