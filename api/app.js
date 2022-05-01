@@ -1,12 +1,15 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-let cardsRouter = require('./routes/cards');
+//Routers
+const usersRouter = require('./routes/users');
+const cardsRouter = require('./routes/cards');
+
+//Database
+const db = require('./databases/database');
 
 var app = express();
 
@@ -20,7 +23,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
+//Setup middleware
+
+// add db to request
+app.use((req, res, next) => {
+  req.db = db;
+  next();
+})
+
 app.use('/cards', cardsRouter);
 app.use('/users', usersRouter);
 
