@@ -52,12 +52,12 @@ export function ProfileScreen() {
                 <View style={{flexDirection: 'row', justifyContent:'flex-start', alignItems: 'flex-start', alignContent: 'flex-start', width: '100%', height: '100%', flexWrap: 'wrap'}}>    
                     {/*savedCardsArray*/}
                     {DATA.map((post, index) => (
-                        <Card post={post} index={index}>
+                        <Card post={post} key={index}>
                             <View style={{width: '100%', height:'85%'}}>
                                 <Image style= {{flex:2, width: undefined}} source={require('../../images/Snoqualmie_Falls.png')}/>
                             </View>
                             <Text style={{flex: 1}}>{post.title}</Text>
-                        </Card>  
+                        </Card> 
                     ))}
                            
 
