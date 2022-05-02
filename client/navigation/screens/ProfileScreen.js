@@ -1,6 +1,6 @@
 
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { View, Text, Image, StyleSheet, Pressable, TouchableOpacity } from 'react-native';
+import { View, Text, Image, StyleSheet, Pressable, TouchableOpacity, ScrollView } from 'react-native';
 import React, { useState } from 'react';
 import Card from '../sharedComponents/card' 
 
@@ -11,32 +11,88 @@ export function ProfileScreen() {
 
     [tabState, setTabState] = useState(false);
 
+
+    const DATA = [
+        {
+          id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+          title: 'First Item',
+        },
+        {
+          id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+          title: 'Second Item',
+        },
+        {
+          id: '58694a0f-3da1-471f-bd96-145571e29d72',
+          title: 'Third Item',
+        },
+      ];
+    
+
+    const EachCard = () => {
+        return(
+            <Card>
+                <View style={{width: '100%', height:'85%'}}>
+                    <Image style= {{flex:2, width: undefined}} source={require('../../images/Snoqualmie_Falls.png')}/>
+                </View>
+                <Text style={{flex: 1}}>Item</Text>
+            </Card>            
+        )
+    };
+
+    let savedCardsArray = [];
+    for (let i = 0; i < DATA.length; i++) {
+        savedCardsArray.push(<EachCard key={i} />)
+    }
+
+
+
     const SavedCards = () => {
-        return (<View style={{flexDirection: 'row', justifyContent:'start', alignItems: 'left', width: '100%', height: '100%',flexWrap: 1}}>
+        return (
+            <ScrollView>
+                <View style={{flexDirection: 'row', justifyContent:'flex-start', alignItems: 'flex-start', alignContent: 'flex-start', width: '100%', height: '100%', flexWrap: 'wrap'}}>    
+                    {/*savedCardsArray*/}
+                    {DATA.map((post, index) => (
+                        <Card post={post} index={index}>
+                            <View style={{width: '100%', height:'85%'}}>
+                                <Image style= {{flex:2, width: undefined}} source={require('../../images/Snoqualmie_Falls.png')}/>
+                            </View>
+                            <Text style={{flex: 1}}>{post.title}</Text>
+                        </Card>  
+                    ))}
+                           
+
+
+                    {/*
                     <Card>
                         <View style={{width: '100%', height:'85%'}}>
                             <Image style= {{flex:1 , width: undefined, height: undefined}} source={require('../../images/Snoqualmie_Falls.png')}/>
                         </View>
                         <Text style={{flex:1}}>Snoqualmie Falls</Text>
                     </Card>
-
-                    <Card>
+                    */}
+                    {/*<Card>
                         <View style={{width: '100%', height:'85%'}}>
                             <Image style= {{flex:1 , width: undefined, height: undefined}} source={require('../../images/food-and-drink.png')}/>
                         </View>
                         <Text style={{flex:1}}>Food and Drink</Text>
-                    </Card>
+                    </Card>*/}
+                    
 
-                </View>)
+                </View>
+            </ScrollView>)
     }
 
     const MyCards = () => {
-        return (<View style={{flexDirection: 'row', justifyContent:'start', alignItems: 'left', width: '100%', height: '66%', flexWrap: 1}} >
-                    <Card>
-                        <View style={{width: '100%', height:'85%'}}>
-                            {<Image style= {{flex:1 , width: undefined, height: undefined}} source={require('../../images/KerryPark.png')}/>}
-                        </View>
-                        <Text style={{flex:1}}>Enjoy Seattle's View</Text>
+        return (<View style={{flexDirection: 'row', justifyContent:'flex-start', alignItems: 'left', width: '100%', height: '66%', flexWrap: 1}} >
+                    
+                    
+                    <Card >
+                        
+                            <View style={{width: '100%', height:'85%'}}>
+                                {<Image style= {{flex:1, width: undefined, height: undefined}} source={require('../../images/KerryPark.png')}/>}
+                            </View>
+                            <Text style={{flex: 1, }}>Enjoy Seattle's View hello</Text>
+                        
                     </Card>
 
                     <Card>

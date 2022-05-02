@@ -13,19 +13,28 @@ export default function Card(props) {
 
 const styles = StyleSheet.create({
     card: {
-        width: 130,
-        height: 190,
-        borderRadius: 6,
+        flexShrink: 1,
+        justifyContent: 'flex-start',
+        alignContent: 'flex-start',
+        
+        width: 110,
+        height: 140,
+        //borderRadius: 0,
         elevation: 3,
         backgroundColor: '#fff',
         shadowOffset: {width: 1, height: 1},
         shadowColor: '#333',
         shadowOpacity: 0.3,
         shadowRadius: 2,
-        marginHorizontal: 6,
+        marginHorizontal: 3,
         marginVertical: 6
     },
     cardContent: {
+        //flexWrap: 'wrap'
+        //flexShrink: 1
+        //justifyContent: 'flex-start',
+        //alignContent: 'center',
+        //alignContent: 'center'
         //marginHorizontal: 10,
         //marginVertical: 30
 

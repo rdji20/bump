@@ -13,7 +13,7 @@ const PLACEHOLDER_IMG = 'http://www.placecage.com/200/300'
 const uploadPostSchema = Yup.object().shape({
     title: Yup.string().max(100, 'title has reached the character limit.').required('title is required'),
     desc: Yup.string().max(2200, 'description has reached the character limit.'),
-    imageUrl: Yup.string().required('image is required')
+    //imageUrl: Yup.string().required('image is required')
 })
 
 export const FormikPostUploader = () => {
@@ -39,8 +39,7 @@ export const FormikPostUploader = () => {
     return (
         <Formik
             initialValues = {{title: '', imageUrl: '', location: '', hours: '', hashtag:'', desc: ''}}
-            onSubmit={(values) => {values.imageUrl = image; 
-                
+            onSubmit={(values) => {values.imageUrl = image;
                  console.log(values)}}
             validationSchema={uploadPostSchema}
             validateOnMount={true}
@@ -50,18 +49,22 @@ export const FormikPostUploader = () => {
                 <>
                     <View>
                         <View style={{alignItems: 'center', margin:50}}>
-                            <TouchableOpacity onPress={pickImage}>
-                            <Image
-                                source={{uri: image ? image: PLACEHOLDER_IMG}}
-                                style={{width: image ? 150: 0, height: image ? 150: 0, margin: image ? 20:0, opacity: image ? 1 : 0}}
-                            />
+                            <TouchableOpacity 
+                                onPress={pickImage}
+                            >
+                                <Image
+                                    source={{uri: image ? image: PLACEHOLDER_IMG}}
+                                    style={{width: image ? 150: 0, height: image ? 150: 0, margin: image ? 20:0, opacity: image ? 1 : 0}}
+                                />
                             </TouchableOpacity>
 
-                            <TouchableOpacity  onPress={() => {pickImage(handleChange('imageUrl'))}}>
-                                <Image style={{resizeMode: 'contain', width: image ? 0: 60,height: image ? 0: 60, opacity: image ? 0 : 1, margin: image ? 0: 20}} 
-                                        source={require('../../../images/flat-color-icons_add-image.png')} 
-                                        />
-                                <Text style={{position: 'absolute', top: 15, right: 10, fontSize: 25, opacity: image?0:1, color: 'red'}}>*</Text>
+                            <TouchableOpacity 
+                                onPress = {pickImage} 
+                            >
+                                    <Image style={{resizeMode: 'contain', width: image ? 0: 60,height: image ? 0: 60, opacity: image ? 0 : 1, margin: image ? 0: 20}} 
+                                            source={require('../../../images/flat-color-icons_add-image.png')} 
+                                            />
+                                    <Text style={{position: 'absolute', top: 15, right: 10, fontSize: 25, opacity: image?0:1, color: 'red'}}>*</Text>
                             </TouchableOpacity>
                         </View>
                         
@@ -145,10 +148,6 @@ export const FormikPostUploader = () => {
                         </View>
 
                         <Divider width={0.2} orientation='vertical'/>
-
-
-
-                        
 
                         <View style={{flexDirection: 'row', justifyContent : 'center'}}>
                             <View style={{flexDirection: 'row', alignItems: 'center', justifyContent : 'center', marginTop: 70, backgroundColor: '#543F9B', width: 120, paddingVertical: 8, borderRadius: 6, elevation: 10}}>
