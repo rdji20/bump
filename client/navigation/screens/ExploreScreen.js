@@ -2,8 +2,9 @@
 import { Entypo, Feather, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useEffect, useState } from 'react';
-import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { DatePickerIOSComponent, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import * as RequestManager from '../../utils/RequestManager';
+import { assets } from '.';
 
 
 export function ExploreScreen() {
@@ -29,7 +30,7 @@ export function ExploreScreen() {
   }, [showSaveText])
 
   useEffect(() => {
-    getCardData([202]).then(data => {
+    getCardData([202, 203, 204, 205]).then(data => {
       setCardData(data);
     });
   }, []);
@@ -44,6 +45,13 @@ export function ExploreScreen() {
   const Card = (props) => {
     const [saved, setSaved] = useState(false)
     const { title, description, when, where, tags, img_name } = props.data
+
+    const summarizeDesc = () => {
+      if (description.length > 40) {
+        return description.substring(0, 40) + '...';
+      }
+      return description;
+    }
     
     return (
       <View
@@ -55,8 +63,8 @@ export function ExploreScreen() {
         }}
       >
         <Image
-          source={require("../../images/Snoqualmie_Falls.png")}
-          style={{ width: "100%", resizeMode: "cover", aspectRatio: 1 }}
+          source={assets[img_name]}
+          style={{ width: "100%", height: 547, resizeMode: "cover", aspectRatio: 1 }}
         />
         <View
           style={{
@@ -106,7 +114,7 @@ export function ExploreScreen() {
                 <Text style={styles.text}>{when}</Text>
               </View>
               <TouchableOpacity onPress={() => console.log("click")}>
-                <Text style={styles.text}>{description}</Text>
+                <Text style={styles.text}>{summarizeDesc()}</Text>
               </TouchableOpacity>
             </View>
             
@@ -196,7 +204,7 @@ export function ExploreScreen() {
         style={styles.scrollContainer}
         snapToAlignment={"start"}
         decelerationRate={"fast"}
-        snapToInterval={547}
+        snapToInterval={555}
         disableScrollViewPanResponder={true}
       >
         {cards}
