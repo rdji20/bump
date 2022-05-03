@@ -10,7 +10,7 @@ export function MyTabs() {
   return (
     <NavigationContainer>
       <Tab.Navigator
-        initialRouteName="Profile"
+        initialRouteName="Explore"
         tabBarPosition="bottom"
         backBehavior="order"
         screenOptions={({ route }) => ({
