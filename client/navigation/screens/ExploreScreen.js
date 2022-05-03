@@ -1,12 +1,12 @@
 
-import React from 'react';
-import { Entypo, Feather, Foundation, Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { Entypo, Feather, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Image, ScrollView, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import * as RequestManager from '../../utils/RequestManager';
 
 
 export function ExploreScreen() {
-  const [saved, setSaved] = React.useState(false)
   // const [saved, setSaved] = React.useState(
   //   new Array(10).fill(false)
   // );
@@ -18,14 +18,33 @@ export function ExploreScreen() {
   //   setSaved(updateSaved);
 
   // };
-  const [showSaveText, setShowSaveText] = React.useState(false)
-  React.useEffect(() => {
+  const [showSaveText, setShowSaveText] = useState(false)
+  const [cardData, setCardData] = useState([]);
+
+  useEffect(() => {
     if (showSaveText) {
       // 1000 for 1 second
       setTimeout(() => setShowSaveText(false), 2000)
     }
   }, [showSaveText])
-  const Card = () => {
+
+  useEffect(() => {
+    getCardData([202]).then(data => {
+      setCardData(data);
+    });
+  }, []);
+
+
+  const getCardData = async (cardIdList) => {
+    return Promise.all(cardIdList.map(cardId => {
+      return RequestManager.getCard(cardId);
+    }));
+  }
+
+  const Card = (props) => {
+    const [saved, setSaved] = useState(false)
+    const { title, description, when, where, tags, img_name } = props.data
+    
     return (
       <View
         style={{
@@ -52,7 +71,7 @@ export function ExploreScreen() {
                 paddingLeft: 25,
                 height: "93%" 
               }}>
-                <Text style={styles.titleText}>View Snoqualmie Falls</Text>
+                <Text style={styles.titleText}>{title}</Text>
           </View>
           <Image
           source={require("../../images/save.png")}
@@ -71,7 +90,7 @@ export function ExploreScreen() {
               }}
             >
               <View style={{ flexDirection: "row" }}>
-                <Text style={styles.nameText}>Snoqualmie Falls</Text>
+                <Text style={styles.nameText}>{title}</Text>
               </View>
               <View style={{ flexDirection: "row" }}>
                 <Ionicons
@@ -80,19 +99,19 @@ export function ExploreScreen() {
                   color="white"
                   style={styles.contentIcons}
                 />
-                <Text style={styles.text}>Snoqualmie</Text>
+                <Text style={styles.text}>{where}</Text>
               </View>
               <View style={{ flexDirection: "row" }}>
                 <Feather name="clock" size={18} color="white" style={styles.contentIcons}/>
-                <Text style={styles.text}>24 hours</Text>
+                <Text style={styles.text}>{when}</Text>
               </View>
               <TouchableOpacity onPress={() => console.log("click")}>
-                <Text style={styles.text}>Snoqualmie Falls is a 268-foot...</Text>
+                <Text style={styles.text}>{description}</Text>
               </TouchableOpacity>
             </View>
             
               <View style={{position: 'absolute', alignSelf: 'flex-end', paddingRight: 25, paddingTop: 30}}>
-                <TouchableOpacity onPress={() => {setSaved(!saved), setShowSaveText(true) }}>
+                <TouchableOpacity onPress={() => {setSaved(!saved) /*setShowSaveText(true)*/ }}>
                   <MaterialIcons name={saved ?"bookmark":"bookmark-outline"} size={35} color={saved?'rgb(95,150,254)':"white"} style={styles.buttonIcons}/>
                 </TouchableOpacity>
                 <TouchableOpacity >
@@ -108,9 +127,10 @@ export function ExploreScreen() {
     );
   };
 
-  let cards = [];
-  for (let i = 0; i < 10; i++) {
-    cards.push(<Card key={i} />);
+  cards = [];
+  for (let i = 0; i < cardData.length; i++) {
+    console.log(JSON.stringify(cardData[i]));
+    cards.push(<Card key={i} data={cardData[i]} />);
   }
 
   const Header = () => {
