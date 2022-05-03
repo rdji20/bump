@@ -7,6 +7,24 @@ import { Image, ScrollView, StyleSheet, Text, View, TouchableOpacity } from 'rea
 
 export function ExploreScreen() {
   const [saved, setSaved] = React.useState(false)
+  // const [saved, setSaved] = React.useState(
+  //   new Array(10).fill(false)
+  // );
+  // const handleSaved = (position) => {
+  //   const updateSaved = saved.map((data, i) =>
+  //     i === position ? !data : data
+  //   );
+
+  //   setSaved(updateSaved);
+
+  // };
+  const [showSaveText, setShowSaveText] = React.useState(false)
+  React.useEffect(() => {
+    if (showSaveText) {
+      // 1000 for 1 second
+      setTimeout(() => setShowSaveText(false), 2000)
+    }
+  }, [showSaveText])
   const Card = () => {
     return (
       <View
@@ -29,25 +47,31 @@ export function ExploreScreen() {
             height: "100%",
           }}
         >
+          <View style={{
+                position: "absolute",
+                paddingLeft: 25,
+                height: "93%" 
+              }}>
+                <Text style={styles.titleText}>View Snoqualmie Falls</Text>
+          </View>
+          <Image
+          source={require("../../images/save.png")}
+          style={showSaveText?{marginLeft: 150}:{opacity: 0, height: 0}}
+          />
           <LinearGradient
             colors={["transparent", "rgba(0, 0, 0, 0.9)"]}
             style={{ height: "40%" }}
           >
+            
             <View
               style={{
                 position: "absolute",
                 paddingLeft: 25,
-                paddingTop: "30%",
+                paddingTop: "20%",
               }}
             >
               <View style={{ flexDirection: "row" }}>
-                <Foundation
-                  name="trees"
-                  size={18}
-                  color="white"
-                  style={styles.contentIcons}
-                />
-                <Text style={styles.text}>Snoqualmie Falls</Text>
+                <Text style={styles.nameText}>Snoqualmie Falls</Text>
               </View>
               <View style={{ flexDirection: "row" }}>
                 <Ionicons
@@ -59,12 +83,7 @@ export function ExploreScreen() {
                 <Text style={styles.text}>Snoqualmie</Text>
               </View>
               <View style={{ flexDirection: "row" }}>
-                <Foundation
-                  name="clock"
-                  size={18}
-                  color="white"
-                  style={styles.contentIcons}
-                />
+                <Feather name="clock" size={18} color="white" style={styles.contentIcons}/>
                 <Text style={styles.text}>24 hours</Text>
               </View>
               <TouchableOpacity onPress={() => console.log("click")}>
@@ -72,14 +91,14 @@ export function ExploreScreen() {
               </TouchableOpacity>
             </View>
             
-              <View style={{position: 'absolute', alignSelf: 'flex-end', paddingRight: 25}}>
-                        <TouchableOpacity onPress={() => setSaved(!saved)}>
-                            <MaterialIcons name={saved ?"bookmark":"bookmark-outline"} size={35} color={saved?'rgb(95,150,254)':"white"} style={styles.buttonIcons}/>
-                        </TouchableOpacity>
-                        <TouchableOpacity >
-                            <Feather name='thumbs-down' size={30} color='white' style={styles.buttonIcons} />
-                        </TouchableOpacity>
-                        <Entypo name="dots-three-horizontal" size={25} color="white" style = {styles.buttonIcons} />
+              <View style={{position: 'absolute', alignSelf: 'flex-end', paddingRight: 25, paddingTop: 30}}>
+                <TouchableOpacity onPress={() => {setSaved(!saved), setShowSaveText(true) }}>
+                  <MaterialIcons name={saved ?"bookmark":"bookmark-outline"} size={35} color={saved?'rgb(95,150,254)':"white"} style={styles.buttonIcons}/>
+                </TouchableOpacity>
+                <TouchableOpacity >
+                  <Feather name='thumbs-down' size={30} color='white' style={styles.buttonIcons} />
+                    </TouchableOpacity>
+                    <Entypo name="dots-three-horizontal" size={25} color="white" style = {styles.buttonIcons} />
               </View>
               
             
@@ -119,7 +138,7 @@ export function ExploreScreen() {
             width: "100%",
             position: "relative",
             top: 30,
-            right: "30%",
+            right: "15%",
           }}
         >
           <Text style={styles.tabs}>{"Events"}</Text>
@@ -131,7 +150,7 @@ export function ExploreScreen() {
                 textDecorationLine: "underline",
                 fontWeight: "bold",
                 textDecorationColor: "#8664F6",
-                marginLeft: 50,
+                marginLeft: 40,
                 marginRight: 30,
               },
             ]}
@@ -172,7 +191,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   tabs: {
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: "500",
   },
   title: {
@@ -183,13 +202,25 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 14,
     color: "rgb(255, 255, 255)",
+    paddingVertical: 8,
+  },
+  titleText: {
+    fontSize: 28,
+    color: "rgb(255, 255, 255)",
+    fontWeight: "bold",
+    paddingVertical: 5,
+  },
+  nameText: {
+    fontSize: 20,
+    color: "rgb(255, 255, 255)",
+    fontWeight: "bold",
     paddingVertical: 5,
   },
   buttonIcons: {
-    paddingVertical: 5,
+    paddingVertical: 12,
   },
   contentIcons: {
     paddingRight: 5,
-    paddingTop: 3,
+    paddingTop: 8,
   },
 });
