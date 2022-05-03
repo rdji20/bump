@@ -3,7 +3,6 @@ var router = express.Router();
 
 /* GET cards listing. */
 router.get('/', async function(req, res, next) {
-  console.log('GOT THE REQUEST');
   try {
     const cardId = Number(req.query.cardId);
     const Card = req.db.Card;
@@ -14,7 +13,6 @@ router.get('/', async function(req, res, next) {
       throw new Error('CardId was undefined');
     }
 
-    console.log("sending as json");
     res.json({status: 'success', payload: cardData });
   } catch (err) {
     res.json({ status: 'error', error: err});
