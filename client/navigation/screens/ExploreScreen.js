@@ -1,40 +1,27 @@
 
 import { Entypo, Feather, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import React, { useEffect, useState } from 'react';
-import { DatePickerIOSComponent, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import * as RequestManager from '../../utils/RequestManager';
+import React, { useEffect, useRef, useState } from 'react';
+import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { assets } from '.';
+import * as RequestManager from '../../utils/RequestManager';
 
 
 export function ExploreScreen() {
-  // const [saved, setSaved] = React.useState(
-  //   new Array(10).fill(false)
-  // );
-  // const handleSaved = (position) => {
-  //   const updateSaved = saved.map((data, i) =>
-  //     i === position ? !data : data
-  //   );
-
-  //   setSaved(updateSaved);
-
-  // };
-  const [showSaveText, setShowSaveText] = useState(false)
   const [cardData, setCardData] = useState([]);
+  const [filters, setFilters] = useState([false, false, false]);
+  const filterMap = useRef({
+    "Events": 0,
+    "Things To Do": 1,
+    "Food & Drink": 2
+  });
+  const recs = useRef([202, 203, 204, 205, 206, 207, 208, 209, 210, 211]);
 
   useEffect(() => {
-    if (showSaveText) {
-      // 1000 for 1 second
-      setTimeout(() => setShowSaveText(false), 2000)
-    }
-  }, [showSaveText])
-
-  useEffect(() => {
-    getCardData([202, 203, 204, 205]).then(data => {
+    getCardData(recs.current).then(data => {
       setCardData(data);
     });
   }, []);
-
 
   const getCardData = async (cardIdList) => {
     return Promise.all(cardIdList.map(cardId => {
@@ -44,15 +31,25 @@ export function ExploreScreen() {
 
   const Card = (props) => {
     const [saved, setSaved] = useState(false)
-    const { title, description, when, where, tags, img_name } = props.data
+    const [showSaveText, setShowSaveText] = useState(false)
 
-    const summarizeDesc = () => {
-      if (description.length > 40) {
-        return description.substring(0, 40) + '...';
+    const { title, description, when, where, tags, img_name, card_id, category } = props.data
+
+    useEffect(() => {
+      if (saved) {
+        RequestManager.addToSavedCards(card_id);
+      } else {
+        RequestManager.removeFromSavedCards(card_id);
       }
-      return description;
+    }, [saved])
+
+    const summarize = (desc, len = 40) => {
+      if (desc.length > len) {
+        return desc.substring(0, len) + '...';
+      }
+      return desc;
     }
-    
+
     return (
       <View
         style={{
@@ -79,7 +76,7 @@ export function ExploreScreen() {
                 paddingLeft: 25,
                 height: "93%" 
               }}>
-                <Text style={styles.titleText}>{title}</Text>
+                <Text style={styles.titleText}>{}</Text>
           </View>
           <Image
           source={require("../../images/save.png")}
@@ -111,15 +108,15 @@ export function ExploreScreen() {
               </View>
               <View style={{ flexDirection: "row" }}>
                 <Feather name="clock" size={18} color="white" style={styles.contentIcons}/>
-                <Text style={styles.text}>{when}</Text>
+                <Text style={styles.text}>{summarize(when, 30)}</Text>
               </View>
               <TouchableOpacity onPress={() => console.log("click")}>
-                <Text style={styles.text}>{summarizeDesc()}</Text>
+                <Text style={styles.text}>{summarize(description)}</Text>
               </TouchableOpacity>
             </View>
             
               <View style={{position: 'absolute', alignSelf: 'flex-end', paddingRight: 25, paddingTop: 30}}>
-                <TouchableOpacity onPress={() => {setSaved(!saved) /*setShowSaveText(true)*/ }}>
+                <TouchableOpacity onPress={() => { setSaved(!saved) /* Add Animation later for saved/unsaved card*/ }}>
                   <MaterialIcons name={saved ?"bookmark":"bookmark-outline"} size={35} color={saved?'rgb(95,150,254)':"white"} style={styles.buttonIcons}/>
                 </TouchableOpacity>
                 <TouchableOpacity >
@@ -127,8 +124,6 @@ export function ExploreScreen() {
                     </TouchableOpacity>
                     <Entypo name="dots-three-horizontal" size={25} color="white" style = {styles.buttonIcons} />
               </View>
-              
-            
           </LinearGradient>
         </View>
       </View>
@@ -137,11 +132,22 @@ export function ExploreScreen() {
 
   cards = [];
   for (let i = 0; i < cardData.length; i++) {
-    console.log(JSON.stringify(cardData[i]));
-    cards.push(<Card key={i} data={cardData[i]} />);
+    const noFilters = !filters[0] && !filters[1] && !filters[2];
+    console.log(filterMap.current);
+    console.log(cardData[i].category);
+    if (noFilters || filters[filterMap.current[cardData[i].category]]) {
+      cards.push(<Card key={i} data={cardData[i]} />);
+    }
   }
 
   const Header = () => {
+
+    const pressFilter = (filterIndex) => {
+      let newFilters = [...filters];
+      newFilters[filterIndex] = !newFilters[filterIndex];
+      setFilters(newFilters);
+    }
+
     return (
       <View style={{ marginBottom: 0 }}>
         <View
@@ -149,7 +155,7 @@ export function ExploreScreen() {
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
-            width: "400",
+            width: 400,
           }}
         >
           <Image
@@ -160,8 +166,9 @@ export function ExploreScreen() {
         <View
           style={{
             marginTop: 10,
+            paddingLeft: '10%',
             flexDirection: "row",
-            justifyContent: "center",
+            justifyContent: "space-around",
             alignContent: "flex-end",
             width: "100%",
             position: "relative",
@@ -169,23 +176,21 @@ export function ExploreScreen() {
             right: "15%",
           }}
         >
-          <Text style={styles.tabs}>{"Events"}</Text>
-          <Text
-            style={[
-              styles.tabs,
-              {
-                color: "#8664F6",
-                textDecorationLine: "underline",
-                fontWeight: "bold",
-                textDecorationColor: "#8664F6",
-                marginLeft: 40,
-                marginRight: 30,
-              },
-            ]}
-          >
-            Things to do
-          </Text>
-          <Text style={styles.tabs}>{"Food & Drinks"}</Text>
+        <TouchableOpacity onPress={() => pressFilter(0)}>
+          {
+            (filters[0]) ? <Text style={[styles.tabs, styles.activeTab]}>{"Events"}</Text> : <Text style={styles.tabs}>{"Events"}</Text>
+          }
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => pressFilter(1)}>
+          {
+            (filters[1]) ? <Text style={[styles.tabs, styles.activeTab]}>{"Things to do"}</Text> : <Text style={styles.tabs}>{"Things to do"}</Text>
+          }
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => pressFilter(2)}>
+          {
+            (filters[2]) ? <Text style={[styles.tabs, styles.activeTab]}>{"Food & Drinks"}</Text> : <Text style={styles.tabs}>{"Food & Drinks"}</Text>
+          }
+        </TouchableOpacity>
         </View>
       </View>
     );
@@ -217,6 +222,12 @@ const styles = StyleSheet.create({
   scrollContainer: {
     marginTop: "10%",
     width: "100%",
+  },
+  activeTab: {
+    color: "#8664F6",
+    textDecorationLine: "underline",
+    fontWeight: "bold",
+    textDecorationColor: "#8664F6"
   },
   tabs: {
     fontSize: 14,

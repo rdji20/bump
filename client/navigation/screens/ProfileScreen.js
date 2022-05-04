@@ -14,7 +14,6 @@ export function ProfileScreen() {
 
   const getSavedCardData = async () => {
     const user = await RequestManager.getUser();
-    console.log(JSON.stringify(user));
    return Promise.all(user.savedCards.map(cardId => {
       return RequestManager.getCard(cardId);
     }));

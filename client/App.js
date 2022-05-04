@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { MyTabs } from './navigation/MainContainer';
 import * as RequestManager from './utils/RequestManager';
 
@@ -14,7 +14,7 @@ export default function App() {
       .then(() => console.log('Current DeviceID:' + global.deviceId))
       .then(setInit(true));
   }, []);
-  return (initialized) ? <MyTabs /> : null;
+  return (initialized) ? <MyTabs /> : <View></View>;
 }
 
 const styles = StyleSheet.create({

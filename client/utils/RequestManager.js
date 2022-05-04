@@ -2,7 +2,7 @@ import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
 import * as SecureStore from "expo-secure-store";
 
-const localIPAddress = '10.18.173.253';
+const localIPAddress = '192.168.1.193';
 
 export async function getDeviceId() {
   let deviceId = await SecureStore.getItemAsync("deviceId");
@@ -36,9 +36,10 @@ export async function getUser() {
 }
 
 //ADD CARDS TO CURRENT USER
-const addUserCardsEndpoint = `http://${localIPAddress}:3000/users/add?deviceId=${global.deviceId}`;
+const addUserCardsEndpointTemplate = `http://${localIPAddress}:3000/users/add?deviceId=`;
 
 export function addToMyCards(cardId) {
+  const addUserCardsEndpoint = addUserCardsEndpointTemplate + global.deviceId;
   const body = {
     cardId: cardId,
     collection: "myCards",
@@ -47,6 +48,7 @@ export function addToMyCards(cardId) {
 }
 
 export function addToSavedCards(cardId) {
+  const addUserCardsEndpoint = addUserCardsEndpointTemplate + global.deviceId;
   const body = {
     cardId: cardId,
     collection: "savedCards",
@@ -55,6 +57,7 @@ export function addToSavedCards(cardId) {
 }
 
 export function addToDislikedCards(cardId) {
+  const addUserCardsEndpoint = addUserCardsEndpointTemplate + global.deviceId;
   const body = {
     cardId: cardId,
     collection: "dislikedCards",
@@ -63,9 +66,10 @@ export function addToDislikedCards(cardId) {
 }
 
 //REMOVE CARDS FROM CURRENT USER
-const removeUserCardsEndpoint = `http://${localIPAddress}:3000/users/remove?deviceId=${global.deviceId}`;
+const removeUserCardsEndpointTemplate = `http://${localIPAddress}:3000/users/remove?deviceId=`;
 
 export function removeFromMyCards(cardId) {
+  const removeUserCardsEndpoint = removeUserCardsEndpointTemplate + global.deviceId;
   const body = {
     cardId: cardId,
     collection: "myCards",
@@ -74,6 +78,7 @@ export function removeFromMyCards(cardId) {
 }
 
 export function removeFromSavedCards(cardId) {
+  const removeUserCardsEndpoint = removeUserCardsEndpointTemplate + global.deviceId;
   const body = {
     cardId: cardId,
     collection: "savedCards",
@@ -82,6 +87,7 @@ export function removeFromSavedCards(cardId) {
 }
 
 export function removeFromDislikedCards(cardId) {
+  const removeUserCardsEndpoint = removeUserCardsEndpointTemplate + global.deviceId;
   const body = {
     cardId: cardId,
     collection: "dislikedCards",
