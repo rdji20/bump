@@ -15,7 +15,7 @@ export function ExploreScreen() {
     "Things To Do": 1,
     "Food & Drink": 2
   });
-  const recs = useRef([202, 203, 204, 205, 206, 207, 208, 209, 210, 211]);
+  const recs = useRef([202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 534, 535, 536, 537]);
 
   useEffect(() => {
     getCardData(recs.current).then(data => {
@@ -104,7 +104,7 @@ export function ExploreScreen() {
                   color="white"
                   style={styles.contentIcons}
                 />
-                <Text style={styles.text}>{where}</Text>
+                <Text style={styles.text}>{summarize(where, 30)}</Text>
               </View>
               <View style={{ flexDirection: "row" }}>
                 <Feather name="clock" size={18} color="white" style={styles.contentIcons}/>

@@ -1,5 +1,18 @@
 var express = require('express');
 var router = express.Router();
+const multer = require('multer');
+
+const storage = multer.diskStorage({
+  destination: function(req, file, cb) {
+    cb(null, './uploads');
+  },
+  filename: function(req, file, cb) {
+    cb(null, req.body.cardId + '-' + file.originalname);
+  }
+})
+
+const upload = multer({storage: storage});
+
 
 /* GET cards listing. */
 router.get('/', async function(req, res, next) {
@@ -34,6 +47,10 @@ router.post('/', async (req, res, next) => {
   } catch (err) {
     res.json({ status: 'error', error: err });
   }
+});
+
+router.post('/image', upload.single('cardImage'), (req, res, next) => {
+  res.send('Success');
 });
 
 module.exports = router;

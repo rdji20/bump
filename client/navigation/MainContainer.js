@@ -19,7 +19,7 @@ export function MyTabs() {
             if (route.name == "Explore") {
               iconName = focused ? "map" : "map-outline";
             } else if (route.name == "Community") {
-              iconName = focused ? "people" : "people-outline";
+              iconName = focused ? "add-circle" : "add-circle-outline";
             } else {
               iconName = focused ? "person-circle" : "person-circle-outline";
             }
