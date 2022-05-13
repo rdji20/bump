@@ -1,48 +1,60 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Text, TextInput,TouchableOpacity } from 'react-native';
+import { Keyboard, LogBox, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import { MyTabs } from './navigation/MainContainer';
 import * as RequestManager from './utils/RequestManager';
 
 export default function App() {
+
+  LogBox.ignoreAllLogs();
 
   [initialized, setInit] = useState(false);
   [userInfo, setUserInfo] = useState('');
 
   //Runs hook one time upon app initialization
   useEffect(() => {
-    RequestManager.getDeviceId()
-      .then(deviceId => global.deviceId = deviceId)
-      .then(() => console.log('Current DeviceID:' + global.deviceId))
-      .then(setInit(true));
+    RequestManager.getDeviceId(initialized)
+      .then(results => {
+        const { firstTimeUser, deviceId } = results;
+        console.log(firstTimeUser + ' ' + deviceId);
+        global.deviceId = deviceId
+        if (!firstTimeUser) setInit(true);
+      })
+      .then(() => console.log('Current DeviceID:' + global.deviceId));
   }, []);
+
   return (initialized) ? <MyTabs /> : 
-  <View style={styles.container}>
+  <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+    <View style={styles.container}>
 
 
-    <Text style={styles.paragraph}>
-      Welcome to Bump
-    </Text>
+      <Text style={styles.paragraph}>
+        Welcome to Bump
+      </Text>
 
 
-    <Text style={styles.prompt}>
-      Tell us about yourself.
-    </Text>
-    
-    <TextInput
-      multiline
-      style={styles.input}
-      placeholder='e.g. I like netflix and coffee.'
-      onChangeText={(val) => setUserInfo(val)}
-    />
+      <Text style={styles.prompt}>
+        Tell us about yourself.
+      </Text>
+      
+      <TextInput
+        multiline
+        style={styles.input}
+        placeholder='e.g. I like netflix and coffee.'
+        onChangeText={(val) => setUserInfo(val)}
+      />
 
-    <TouchableOpacity
-      style = {styles.submitButton}
-      onPress = {
-        () => console.log(userInfo)
-      }>
-      <Text style = {styles.submitButtonText}> Submit </Text>
-    </TouchableOpacity>
-</View>;
+      <TouchableOpacity
+        style = {styles.submitButton}
+        onPress = {
+          () => { 
+            console.log(userInfo);
+            setInit(true);
+          }
+        }>
+        <Text style = {styles.submitButtonText}> Submit </Text>
+      </TouchableOpacity>
+  </View>
+</TouchableWithoutFeedback>;
 }
 
 const styles = StyleSheet.create({
@@ -68,7 +80,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
     padding: 8,
-    height: 100
+    height: 100,
+    width: 200
   },
   submitButton: {
     backgroundColor: '#8664F6',
