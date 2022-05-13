@@ -22,7 +22,7 @@ router.get('/', async (req, res, next) => {
     res.json({status: 'success', payload: currentUser });
 
   } catch (err) {
-    res.json({ status: 'error', error: err});
+    console.log(JSON.stringify(err));
   }
 });
 
