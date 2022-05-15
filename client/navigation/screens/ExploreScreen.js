@@ -15,12 +15,18 @@ export function ExploreScreen() {
     "Things To Do": 1,
     "Food & Drink": 2
   });
-  const recs = useRef([202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 534, 535, 536, 537]);
+  const recs = useRef([]);
 
   useEffect(() => {
-    getCardData(recs.current).then(data => {
-      setCardData(data);
-    });
+    RequestManager.getRecommendations()
+      .then(recommendations => {
+        recs.current = recommendations;
+      })
+      .then(() => {
+        getCardData(recs.current).then(data => {
+          setCardData(data);
+        });
+      });
   }, []);
 
   const getCardData = async (cardIdList) => {

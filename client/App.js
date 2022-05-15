@@ -47,8 +47,8 @@ export default function App() {
         style = {styles.submitButton}
         onPress = {
           () => { 
-            console.log(userInfo);
-            setInit(true);
+            RequestManager.addUser(userInfo)
+              .then(() => setInit(true));
           }
         }>
         <Text style = {styles.submitButtonText}> Submit </Text>

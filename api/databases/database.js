@@ -11,7 +11,8 @@ async function main() {
         deviceId: String,
         savedCards: Array,
         myCards: Array,
-        dislikedCards: Array
+        dislikedCards: Array,
+        query: String
     });
 
     const cardSchema = new mongoose.Schema({

@@ -41,6 +41,28 @@ export async function getUser(deviceId = global.deviceId) {
   return undefined;
 }
 
+export async function addUser(queryString, deviceId = global.deviceId, ) {
+  const endpoint = `http://${localIPAddress}:3000/users?deviceId=${deviceId}`;
+  const body = {
+   query: queryString
+  };
+  const newUser = await update("POST", body, endpoint);
+  console.log(JSON.stringify(newUser));
+  return newUser;
+}
+
+export async function getRecommendations() {
+  const user = await getUser();
+  const queryString = user.query;
+  const response = await fetch(
+    `http://${localIPAddress}:8000/bumprecs_sea/${queryString}`
+  );
+  console.log("ML API Response: " + JSON.stringify(response));
+  const responseJson = await response.json();
+  console.log("ML API Response: " + JSON.stringify(response));
+  return responseJson.payload;
+}
+
 //ADD CARDS TO CURRENT USER
 const addUserCardsEndpointTemplate = `http://${localIPAddress}:3000/users/add?deviceId=`;
 
@@ -103,7 +125,7 @@ export function removeFromDislikedCards(cardId) {
 
 //HELPER METHOD FOR NON-GET HTTP REQUESTS
 async function update(method, body, endpoint) {
-  fetch(endpoint, {
+  const response = await fetch(endpoint, {
     method: method,
     headers: {
       Accept: "application/json",
@@ -111,4 +133,9 @@ async function update(method, body, endpoint) {
     },
     body: JSON.stringify(body),
   });
+  const responseJson = await response.json();
+  if (responseJson.status === 'success') {
+    return responseJson.payload;
+  }
+  return undefined;
 }

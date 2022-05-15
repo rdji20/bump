@@ -7,13 +7,28 @@ router.get('/', async (req, res, next) => {
     const deviceId = getDeviceId(req);
     const User = req.db.User;
     const currentUser = await User.findOne({ deviceId: deviceId }).exec();
+    res.json({status: 'success', payload: currentUser });
+
+  } catch (err) {
+    console.log(JSON.stringify(err));
+  }
+});
+
+/* POST users listing. */
+router.post('/', async (req, res, next) => {
+  try {
+    const deviceId = getDeviceId(req);
+    const queryString = getQueryString(req);
+    const User = req.db.User;
+    const currentUser = await User.findOne({ deviceId: deviceId }).exec();
 
     if (currentUser === null) {
       const newUser = new User({
         deviceId: deviceId,
         savedCards: [],
         myCards: [],
-        dislikedCards: []
+        dislikedCards: [],
+        query: queryString
       });
       newUser.save();
       res.json({ status: 'success', payload: newUser });
@@ -22,10 +37,12 @@ router.get('/', async (req, res, next) => {
     res.json({status: 'success', payload: currentUser });
 
   } catch (err) {
-    console.log(JSON.stringify(err));
+    console.log("Error: " + JSON.stringify(err));
   }
 });
 
+
+/* PATCH users listing. */
 router.patch('/add', async (req, res, next) => {
   try {
    const User = req.db.User; 
@@ -82,6 +99,14 @@ const getCardId = (req) => {
       throw new Error('Card ID was undefined');
 
     return Number(id);
+}
+
+const getQueryString = (req) => {
+    const queryString = req.body.query;
+    if (queryString === undefined)
+      throw new Error('queryString was undefined');
+
+    return queryString;
 }
 
 const getCollection = (req) => {
