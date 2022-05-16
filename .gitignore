@@ -53,3 +53,6 @@ buck-out/
 .expo/
 web-build/
 dist/
+
+#Byte-compiled
+__pycache__/
