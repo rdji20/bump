@@ -1,4 +1,8 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+from pydantic import BaseModel
+from fastapi.encoders import jsonable_encoder
 import pickle
 import pandas as pd
 import numpy as np
@@ -14,6 +18,7 @@ from nltk.tokenize import TweetTokenizer
 import os
 import uvicorn
 from scipy import spatial
+
 
 
 def load_model():
@@ -101,8 +106,22 @@ def lda_query_docspace_vectorizer_pickle(query):
     return list(final_recs)
 
 
-
 app = FastAPI()
+
+origins = [
+    "http://localhost",
+    "http://localhost:8000"
+    "http://localhost:8080",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 @app.get("/")
 async def root():
@@ -116,8 +135,12 @@ async def get_recommendations(query):
         cards_string += str((data_pic["sea_cards"].iloc[num].card_id)) + " " 
     cards = cards_string.split(" ")
     cards = cards[:-1]
+    cards = cards[0:20]
     cards = [int(i) for i in cards]
     print(query)
-    return {"sea_cards_ids": cards}
+    response_dict = {"sea_cards_ids": cards}
+    json_compatible_item_data = jsonable_encoder(response_dict)
+    return JSONResponse(content=json_compatible_item_data)
+    # return {"sea_cards_ids": cards}
 
 

@@ -54,13 +54,17 @@ export async function addUser(queryString, deviceId = global.deviceId) {
 export async function getRecommendations() {
   const user = await getUser();
   const queryString = user.query;
+  console.log("MAKING REQUEST");
   const response = await fetch(
     `http://${localIPAddress}:8000/bumprecs_sea/${queryString}`
-  );
+  ).catch((e) => {
+    console.log(e);
+  });
+
   console.log("ML API Response: " + JSON.stringify(response));
   const responseJson = await response.json();
-  console.log("ML API Response: " + JSON.stringify(response));
-  return responseJson.payload;
+  console.log("ML API Response: " + JSON.stringify(responseJson));
+  return responseJson.sea_cards_ids;
 }
 
 //ADD CARDS TO CURRENT USER
