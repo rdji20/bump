@@ -6,7 +6,7 @@ const localIPAddress = '172.28.102.144';
 
 export async function getDeviceId(temp = false) {
   if (!temp) {
-    await SecureStore.deleteItemAsync('deviceId');
+    await SecureStore.deleteItemAsync("deviceId");
   }
   let deviceId = await SecureStore.getItemAsync("deviceId");
   let firstTimeUser = false;
@@ -41,10 +41,10 @@ export async function getUser(deviceId = global.deviceId) {
   return undefined;
 }
 
-export async function addUser(queryString, deviceId = global.deviceId, ) {
+export async function addUser(queryString, deviceId = global.deviceId) {
   const endpoint = `http://${localIPAddress}:3000/users?deviceId=${deviceId}`;
   const body = {
-   query: queryString
+    query: queryString,
   };
   const newUser = await update("POST", body, endpoint);
   console.log(JSON.stringify(newUser));
@@ -111,7 +111,8 @@ export function uploadImage(formData) {
 const removeUserCardsEndpointTemplate = `http://${localIPAddress}:3000/users/remove?deviceId=`;
 
 export function removeFromMyCards(cardId) {
-  const removeUserCardsEndpoint = removeUserCardsEndpointTemplate + global.deviceId;
+  const removeUserCardsEndpoint =
+    removeUserCardsEndpointTemplate + global.deviceId;
   const body = {
     cardId: cardId,
     collection: "myCards",
@@ -120,7 +121,8 @@ export function removeFromMyCards(cardId) {
 }
 
 export function removeFromSavedCards(cardId) {
-  const removeUserCardsEndpoint = removeUserCardsEndpointTemplate + global.deviceId;
+  const removeUserCardsEndpoint =
+    removeUserCardsEndpointTemplate + global.deviceId;
   const body = {
     cardId: cardId,
     collection: "savedCards",
@@ -129,7 +131,8 @@ export function removeFromSavedCards(cardId) {
 }
 
 export function removeFromDislikedCards(cardId) {
-  const removeUserCardsEndpoint = removeUserCardsEndpointTemplate + global.deviceId;
+  const removeUserCardsEndpoint =
+    removeUserCardsEndpointTemplate + global.deviceId;
   const body = {
     cardId: cardId,
     collection: "dislikedCards",
@@ -148,7 +151,7 @@ async function update(method, body, endpoint) {
     body: JSON.stringify(body),
   });
   const responseJson = await response.json();
-  if (responseJson.status === 'success') {
+  if (responseJson.status === "success") {
     return responseJson.payload;
   }
   return undefined;

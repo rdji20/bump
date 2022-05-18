@@ -13,6 +13,7 @@ from nltk.stem.lancaster import LancasterStemmer
 from nltk.tokenize import TweetTokenizer
 import os
 import uvicorn
+from scipy import spatial
 
 
 def load_model():
@@ -67,14 +68,37 @@ def lda_query_docspace_vectorizer_pickle(query):
     for i in docs_ids_user_query_model:
         [user_rec_cards_model.add(card) for card in data_pic['master_db'][i]]
     
-    # I cannot just return this. It throws a non iterable error
-    # sea_cards_nums = set()
-    # for num in user_rec_cards_model:
-    #     sea_cards_nums.add(data_pic["sea_cards"].iloc[num].card_id)
+    # Creating database to sort the db by cosine sim
+    list_of_recs = data_pic["sea_cards"].iloc[list(user_rec_cards_model)]
     
-    # return sea_cards_nums
+    # Create matrix for jaccard sim
+    mat_vector_query = [0] * 15
+    for tup in vector_model:
+        mat_vector_query[tup[0]] = 1 if tup[1] > 0 else 0
     
-    return user_rec_cards_model
+    # Getting the matrix vector size 15 of all the seattle cards lda vectors with jaccard
+    count = 0
+    mat_vectors_sea = []
+    for vec in data_pic["seattle_cards_vectors"]:
+        if count in list_of_recs.index:
+            mat_vector_sea = [0] * 15
+            for tup in vec:
+                mat_vector_sea[tup[0]] = 1 if tup[1] > 0 else 0
+            mat_vectors_sea.append(mat_vector_sea)
+        count += 1
+    
+    # Doing all the cosine sims between query and seattle cards
+    results = []
+    for matvect in mat_vectors_sea:
+        result = 1 - spatial.distance.jaccard(mat_vector_query, matvect)
+        results.append(result)
+        
+    # Adding the column to recommendations db
+    list_of_recs["jac_sim_query"] = results
+    
+    final_recs = list_of_recs.sort_values(by=["jac_sim_query"], ascending=False)
+    final_recs = final_recs.index
+    return list(final_recs)
 
 
 
@@ -93,6 +117,7 @@ async def get_recommendations(query):
     cards = cards_string.split(" ")
     cards = cards[:-1]
     cards = [int(i) for i in cards]
+    print(query)
     return {"sea_cards_ids": cards}
 
 
