@@ -37,7 +37,7 @@ export default function App() {
       <View style={styles.container}>
         <Text style={styles.paragraph}>Welcome to Bump</Text>
 
-        <Text style={styles.prompt}>Tell us about yourself.</Text>
+        <Text style={styles.prompt}>Tell us a lil bit about yourself.</Text>
 
         <TextInput
           multiline
@@ -90,6 +90,7 @@ const styles = StyleSheet.create({
     padding: 10,
     marginVertical: 20,
     height: 40,
+    borderRadius: 5,
   },
   submitButtonText: {
     color: "white",

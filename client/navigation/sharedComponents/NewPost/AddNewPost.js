@@ -10,12 +10,6 @@ export const AddNewPost = () => (
 
 const Header = () => (
   <View style={styles.headerContainer}>
-    <TouchableOpacity>
-      <Image
-        source={require("../../../images/icons8-back-30.png")}
-        style={{ width: 30, height: 30 }}
-      />
-    </TouchableOpacity>
     <Text style={styles.headerText}>NEW CARD</Text>
     <Text></Text>
   </View>
@@ -28,7 +22,7 @@ const styles = StyleSheet.create({
 
   headerContainer: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "center",
     alignItems: "center",
   },
 
@@ -36,7 +30,6 @@ const styles = StyleSheet.create({
     color: "#8664F6",
     fontWeight: "700",
     fontSize: 20,
-    marginRight: 23,
     marginTop: 30,
   },
 });
