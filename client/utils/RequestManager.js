@@ -2,7 +2,7 @@ import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
 import * as SecureStore from "expo-secure-store";
 
-const localIPAddress = "10.0.0.135";
+const localIPAddress = '172.28.102.144';
 
 export async function getDeviceId(temp = false) {
   if (!temp) {
@@ -95,6 +95,20 @@ export function addToDislikedCards(cardId) {
     collection: "dislikedCards",
   };
   update("PATCH", body, addUserCardsEndpoint);
+}
+
+export function uploadImage(formData) {
+  const uploadImageEndpoint = `http://${localIPAddress}:3000/cards/image`;
+  const headers = {
+    'Content-Type': 'multipart/form-data',
+     Accept: 'application/json',
+  }
+  console.log('RIGHT BEFORE REQUEST')
+  fetch(uploadImageEndpoint, {
+    method: 'POST',
+    headers: headers,
+    body: formData
+  }).catch(err => {console.log(JSON.stringify(err))});
 }
 
 //REMOVE CARDS FROM CURRENT USER

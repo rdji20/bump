@@ -11,6 +11,7 @@ import * as Yup from "yup";
 import { Formik } from "formik";
 import { Divider } from "@rneui/themed";
 import * as ImagePicker from "expo-image-picker";
+import * as RequestManager from '../../../utils/RequestManager'
 
 const PLACEHOLDER_IMG = "http://www.placecage.com/200/300";
 
@@ -41,6 +42,18 @@ export const FormikPostUploader = () => {
     }
   };
 
+  const upload = (title) => {
+      const formData = new FormData(); 
+      formData.append('cardId', 35);
+      formData.append('cardImage', {
+        uri: image,
+        type: 'image/jpeg',
+        name: title + '.jpg'
+      });
+      RequestManager.uploadImage(formData)
+  }
+
+
   return (
     <Formik
       initialValues={{
@@ -53,7 +66,7 @@ export const FormikPostUploader = () => {
       }}
       onSubmit={(values) => {
         values.imageUrl = image;
-        console.log(values);
+        upload(values.title)
       }}
       validationSchema={uploadPostSchema}
       validateOnMount={true}
