@@ -7,7 +7,7 @@ const storage = multer.diskStorage({
     cb(null, './uploads');
   },
   filename: function(req, file, cb) {
-    cb(null, req.body.cardId + '-' + file.originalname);
+    cb(null, file.originalname);
   }
 })
 
@@ -32,6 +32,16 @@ router.get('/', async function(req, res, next) {
   }
 });
 
+router.get('/total', async function(req, res, next) {
+  try {
+    const Card = req.db.Card;
+    const totalCards = await Card.countDocuments();
+    res.json({status: 'success', payload: totalCards + 659});
+  } catch (err) {
+    res.json({status: 'error', error: err});
+  }
+});
+
 router.post('/', async (req, res, next) => {
   try {
     const cardData = { ...req.body };
@@ -49,7 +59,13 @@ router.post('/', async (req, res, next) => {
   }
 });
 
-router.post('/image', upload.single('cardImage'), (req, res, next) => {
+router.post('/image', upload.single('cardImage'), async (req, res, next) => {
+  const cardData = JSON.parse(req.body.cardData);
+  const Card = req.db.Card;
+  cardData.img_name = cardData.card_id+ '-' + cardData.title + '.jpg';
+
+  const newCard = new Card(cardData)
+  newCard.save();
   res.send('Success');
 });
 

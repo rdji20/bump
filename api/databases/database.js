@@ -24,7 +24,7 @@ async function main() {
         where: String,
         category: String,
         tags: String,
-        image: String, //1.png
+        img_name: String, //1.png
     })
 
     db.User = mongoose.model('User', userSchema);
