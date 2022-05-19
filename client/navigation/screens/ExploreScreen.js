@@ -205,9 +205,13 @@ export function ExploreScreen() {
 
   const Header = () => {
     const pressFilter = (filterIndex) => {
-      let newFilters = [...filters];
-      newFilters[filterIndex] = !newFilters[filterIndex];
-      setFilters(newFilters);
+      if (filters[filterIndex]) {
+        setFilters([false, false, false])
+      } else {
+        let newFilters = [false, false, false];
+        newFilters[filterIndex] = true;
+        setFilters(newFilters);
+      }
     };
 
     return (

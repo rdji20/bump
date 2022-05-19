@@ -31,6 +31,7 @@
     "react-native-device-info": "^8.7.1",
     "react-native-elements": "^3.4.2",
     "react-native-get-random-values": "^1.7.2",
+    "react-native-image-placeholder": "^1.0.14",
     "react-native-pager-view": "5.4.9",
     "react-native-paper": "^4.11.2",
     "react-native-safe-area-context": "3.3.2",

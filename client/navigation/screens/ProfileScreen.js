@@ -11,9 +11,12 @@ import {
 import * as RequestManager from "../../utils/RequestManager";
 import Card from "../sharedComponents/card";
 import { assets } from ".";
+import ImageLoad from 'react-native-image-placeholder';
+
 
 export function ProfileScreen() {
   const Tab = createMaterialTopTabNavigator();
+  const placeHolder = require('../../images/placeholder.png');
 
   [tabState, setTabState] = useState(false);
 
@@ -28,6 +31,7 @@ export function ProfileScreen() {
 
   const getMyCardData = async () => {
     const user = await RequestManager.getUser();
+    console.log(JSON.stringify(user));
     return Promise.all(
       user.myCards.map((cardId) => {
         return RequestManager.getCard(cardId);
@@ -46,7 +50,7 @@ export function ProfileScreen() {
     }, []);
 
     return (
-      <ScrollView>
+      <ScrollView style={{height: '100%'}}>
         <View
           style={{
             flexDirection: "row",
@@ -61,8 +65,9 @@ export function ProfileScreen() {
           {cardData.map((post, index) => (
             <Card post={post} key={index}>
               <View style={{ width: "100%", height: "85%" }}>
-                <Image
+                <ImageLoad
                   style={{ flex: 2, width: undefined }}
+                  loadingStyle={{size: 'large', color: 'black'}}
                   source={assets[post.img_name]}
                 />
               </View>
@@ -78,10 +83,14 @@ export function ProfileScreen() {
     [cardData, setCardData] = useState([]);
 
     useEffect(() => {
-      getMyCardData().then((data) => setCardData(data));
+      getMyCardData().then((data) => {
+        console.log(JSON.stringify(data));
+        setCardData(data)
+      });
     }, []);
 
     return (
+      <ScrollView style={{height: '100%'}}>
       <View
         style={{
           flexDirection: "row",
@@ -95,15 +104,17 @@ export function ProfileScreen() {
         {cardData.map((post, index) => (
           <Card post={post} key={index}>
             <View style={{ width: "100%", height: "85%" }}>
-              <Image
-                style={{ flex: 2, width: undefined }}
-                source={assets[post.img_name]}
+              <ImageLoad
+                style={{ flex: 2, width: undefined}}
+                loadingStyle={{size: 'large', color: 'black'}}
+                source={{ uri: `http:${RequestManager.localIPAddress}:3000/${post.img_name}`}}
               />
             </View>
             <Text style={{ flex: 1 }}>{post.title}</Text>
           </Card>
         ))}
       </View>
+      </ScrollView>
     );
   };
 

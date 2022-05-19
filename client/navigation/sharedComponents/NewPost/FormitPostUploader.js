@@ -42,15 +42,31 @@ export const FormikPostUploader = () => {
     }
   };
 
-  const upload = (title) => {
-      const formData = new FormData(); 
-      formData.append('cardId', 35);
-      formData.append('cardImage', {
-        uri: image,
-        type: 'image/jpeg',
-        name: title + '.jpg'
-      });
-      RequestManager.uploadImage(formData)
+  const upload = (values) => {
+      RequestManager.getTotalCards()
+        .then(cardId => {
+          const cardData = {
+            card_id: cardId,
+            index: cardId,
+            title: values.title,
+            description: values.desc,
+            when: values.hours,
+            where: values.location,
+            category: "",
+            tags: values.hashtag
+          }
+
+          const formData = new FormData(); 
+          formData.append('cardImage', {
+            uri: image,
+            type: 'image/jpeg',
+            name: cardId + '-' + values.title + '.jpg'
+          });
+          formData.append('cardData', JSON.stringify(cardData))
+          formData.append('cardId', cardId);
+          RequestManager.uploadImage(formData);
+          RequestManager.addToMyCards(cardId)
+        })
   }
 
 
@@ -66,7 +82,7 @@ export const FormikPostUploader = () => {
       }}
       onSubmit={(values) => {
         values.imageUrl = image;
-        upload(values.title)
+        upload(values)
       }}
       validationSchema={uploadPostSchema}
       validateOnMount={true}

@@ -2,7 +2,7 @@ import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
 import * as SecureStore from "expo-secure-store";
 
-const localIPAddress = "10.0.0.135";
+export const localIPAddress = '192.168.1.193';
 
 export async function getDeviceId(temp = false) {
   if (!temp) {
@@ -22,6 +22,17 @@ export async function getDeviceId(temp = false) {
 export async function getCard(cardId) {
   const response = await fetch(
     `http://${localIPAddress}:3000/cards?cardId=${cardId}`
+  );
+  const responseJson = await response.json();
+  if (responseJson.status === "success") {
+    return responseJson.payload;
+  }
+  return undefined;
+}
+
+export async function getTotalCards() {
+  const response = await fetch(
+    `http://${localIPAddress}:3000/cards/total`
   );
   const responseJson = await response.json();
   if (responseJson.status === "success") {
@@ -103,7 +114,6 @@ export function uploadImage(formData) {
     "Content-Type": "multipart/form-data",
     Accept: "application/json",
   };
-  console.log("RIGHT BEFORE REQUEST");
   fetch(uploadImageEndpoint, {
     method: "POST",
     headers: headers,
