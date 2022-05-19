@@ -2,7 +2,7 @@ import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
 import * as SecureStore from "expo-secure-store";
 
-export const localIPAddress = '192.168.1.193';
+export const localIPAddress = '172.28.102.217';
 
 export async function getDeviceId(temp = false) {
   if (!temp) {

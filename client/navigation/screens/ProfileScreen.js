@@ -16,7 +16,6 @@ import ImageLoad from 'react-native-image-placeholder';
 
 export function ProfileScreen() {
   const Tab = createMaterialTopTabNavigator();
-  const placeHolder = require('../../images/placeholder.png');
 
   [tabState, setTabState] = useState(false);
 
