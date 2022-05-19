@@ -1,9 +1,14 @@
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import React, { useEffect, useState } from "react";
 import {
-  Image, Pressable, ScrollView, StyleSheet, Text, View
+  Image,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
 } from "react-native";
-import * as RequestManager from '../../utils/RequestManager';
+import * as RequestManager from "../../utils/RequestManager";
 import Card from "../sharedComponents/card";
 import { assets } from ".";
 
@@ -14,29 +19,32 @@ export function ProfileScreen() {
 
   const getSavedCardData = async () => {
     const user = await RequestManager.getUser();
-   return Promise.all(user.savedCards.map(cardId => {
-      return RequestManager.getCard(cardId);
-    }));
+    return Promise.all(
+      user.savedCards.map((cardId) => {
+        return RequestManager.getCard(cardId);
+      })
+    );
   };
 
   const getMyCardData = async () => {
-   const user = await RequestManager.getUser();
-   return Promise.all(user.myCards.map(cardId => {
-      return RequestManager.getCard(cardId);
-    }));
+    const user = await RequestManager.getUser();
+    return Promise.all(
+      user.myCards.map((cardId) => {
+        return RequestManager.getCard(cardId);
+      })
+    );
   };
-  
-  const SavedCards = () => {
 
+  const SavedCards = () => {
     const [cardData, setCardData] = useState([]);
 
     useEffect(() => {
-      getSavedCardData().then(data => {
+      getSavedCardData().then((data) => {
         console.log(JSON.stringify(data));
-        setCardData(data)
+        setCardData(data);
       });
     }, []);
-   
+
     return (
       <ScrollView>
         <View
@@ -50,7 +58,7 @@ export function ProfileScreen() {
             flexWrap: "wrap",
           }}
         >
-          {cardData.map((post, index) => 
+          {cardData.map((post, index) => (
             <Card post={post} key={index}>
               <View style={{ width: "100%", height: "85%" }}>
                 <Image
@@ -58,20 +66,19 @@ export function ProfileScreen() {
                   source={assets[post.img_name]}
                 />
               </View>
-              <Text style={{ flex: 1 }}>{post.title}</Text>
+              <Text style={{ flex: 1, alignSelf: "center" }}>{post.title}</Text>
             </Card>
-          )}
+          ))}
         </View>
       </ScrollView>
     );
   };
 
   const MyCards = () => {
-
     [cardData, setCardData] = useState([]);
 
     useEffect(() => {
-      getMyCardData().then(data => setCardData(data));
+      getMyCardData().then((data) => setCardData(data));
     }, []);
 
     return (
@@ -85,18 +92,17 @@ export function ProfileScreen() {
           flexWrap: 1,
         }}
       >
-          {cardData.map((post, index) => 
-            (<Card post={post} key={index}>
-              <View style={{ width: "100%", height: "85%" }}>
-                <Image
-                  style={{ flex: 2, width: undefined }}
-                  source={assets[post.img_name]}
-                />
-              </View>
-              <Text style={{ flex: 1 }}>{post.title}</Text>
-            </Card>
-          ))}
-
+        {cardData.map((post, index) => (
+          <Card post={post} key={index}>
+            <View style={{ width: "100%", height: "85%" }}>
+              <Image
+                style={{ flex: 2, width: undefined }}
+                source={assets[post.img_name]}
+              />
+            </View>
+            <Text style={{ flex: 1 }}>{post.title}</Text>
+          </Card>
+        ))}
       </View>
     );
   };
@@ -221,4 +227,3 @@ const styles = StyleSheet.create({
     height: 25,
   },
 });
-

@@ -32,7 +32,6 @@ data_pic = load_model()
 # We have to define master graph and seattle database to call
 # initiate this before >
 def lda_query_docspace_vectorizer_pickle(query):
-    
     tokenizer = TweetTokenizer()
     porter = PorterStemmer()
     words_to_skip = ["i", "canada", "seattle", "edmonton", "calgary", "vancouver", "toronto", "canadian", "edmonton", "alberta", "montreal", "sooner", '_', '...',"‘", '-', "'",'washington', "…", "’", "–", "like", "2022", "1", "10", "”", "“", "really", "new", "best", "favorite", "one", "amazing", "extraordinary", "super", "very", "inmaculate", "prettiest", "outstanding", "8", "5", "7", "10/10"]
@@ -105,6 +104,7 @@ def lda_query_docspace_vectorizer_pickle(query):
     final_recs = final_recs.index
     return list(final_recs)
 
+default_cards = [292, 224, 246, 269, 335, 427, 591, 546, 558, 324, 303, 291]
 
 app = FastAPI()
 
@@ -135,12 +135,16 @@ async def get_recommendations(query):
         cards_string += str((data_pic["sea_cards"].iloc[num].card_id)) + " " 
     cards = cards_string.split(" ")
     cards = cards[:-1]
-    cards = cards[0:20]
-    cards = [int(i) for i in cards]
-    print(query)
-    response_dict = {"sea_cards_ids": cards}
-    json_compatible_item_data = jsonable_encoder(response_dict)
-    return JSONResponse(content=json_compatible_item_data)
-    # return {"sea_cards_ids": cards}
+    print(len(cards))
+    if len(cards) == 0 :
+        default_dic = {"sea_cards_ids": default_cards}
+        return default_dic
+    else :
+        cards = cards[0:20]
+        cards = [int(i) for i in cards]
+        print(query)
+        response_dict = {"sea_cards_ids": cards}
+        json_compatible_item_data = jsonable_encoder(response_dict)
+        return JSONResponse(content=json_compatible_item_data)
 
 
