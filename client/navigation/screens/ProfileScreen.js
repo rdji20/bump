@@ -69,7 +69,7 @@ export function ProfileScreen() {
                 }}
               >
                 <ImageLoad
-                  style={{ flex: 2, width: undefined }}
+                  style={{ flex: 2, width: undefined, borderRadius: 10 }}
                   loadingStyle={{ size: "large", color: "black" }}
                   source={assets[post.img_name]}
                 />
@@ -117,14 +117,23 @@ export function ProfileScreen() {
             <Card post={post} key={index}>
               <View style={{ width: "100%", height: "85%" }}>
                 <ImageLoad
-                  style={{ flex: 2, width: undefined }}
+                  style={{ flex: 2, width: undefined, borderRadius: 10 }}
                   loadingStyle={{ size: "large", color: "black" }}
                   source={{
                     uri: `http:${RequestManager.localIPAddress}:3000/${post.img_name}`,
                   }}
                 />
               </View>
-              <Text style={{ flex: 1 }}>{post.title}</Text>
+              <Text
+                style={{
+                  flex: 1,
+                  alignSelf: "center",
+                  position: "relative",
+                  top: 10,
+                }}
+              >
+                {post.title}
+              </Text>
             </Card>
           ))}
         </View>
