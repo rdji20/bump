@@ -11,8 +11,7 @@ import {
 import * as RequestManager from "../../utils/RequestManager";
 import Card from "../sharedComponents/card";
 import { assets } from ".";
-import ImageLoad from 'react-native-image-placeholder';
-
+import ImageLoad from "react-native-image-placeholder";
 
 export function ProfileScreen() {
   const Tab = createMaterialTopTabNavigator();
@@ -49,7 +48,7 @@ export function ProfileScreen() {
     }, []);
 
     return (
-      <ScrollView style={{height: '100%'}}>
+      <ScrollView style={{ height: "100%" }}>
         <View
           style={{
             flexDirection: "row",
@@ -63,14 +62,28 @@ export function ProfileScreen() {
         >
           {cardData.map((post, index) => (
             <Card post={post} key={index}>
-              <View style={{ width: "100%", height: "85%" }}>
+              <View
+                style={{
+                  width: "100%",
+                  height: "85%",
+                }}
+              >
                 <ImageLoad
                   style={{ flex: 2, width: undefined }}
-                  loadingStyle={{size: 'large', color: 'black'}}
+                  loadingStyle={{ size: "large", color: "black" }}
                   source={assets[post.img_name]}
                 />
               </View>
-              <Text style={{ flex: 1, alignSelf: "center" }}>{post.title}</Text>
+              <Text
+                style={{
+                  flex: 1,
+                  alignSelf: "center",
+                  position: "relative",
+                  top: 10,
+                }}
+              >
+                {post.title}
+              </Text>
             </Card>
           ))}
         </View>
@@ -84,35 +97,37 @@ export function ProfileScreen() {
     useEffect(() => {
       getMyCardData().then((data) => {
         console.log(JSON.stringify(data));
-        setCardData(data)
+        setCardData(data);
       });
     }, []);
 
     return (
-      <ScrollView style={{height: '100%'}}>
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "center",
-          alignItems: "left",
-          width: "100%",
-          height: "66%",
-          flexWrap: 1,
-        }}
-      >
-        {cardData.map((post, index) => (
-          <Card post={post} key={index}>
-            <View style={{ width: "100%", height: "85%" }}>
-              <ImageLoad
-                style={{ flex: 2, width: undefined}}
-                loadingStyle={{size: 'large', color: 'black'}}
-                source={{ uri: `http:${RequestManager.localIPAddress}:3000/${post.img_name}`}}
-              />
-            </View>
-            <Text style={{ flex: 1 }}>{post.title}</Text>
-          </Card>
-        ))}
-      </View>
+      <ScrollView style={{ height: "100%" }}>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "left",
+            width: "100%",
+            height: "66%",
+            flexWrap: 1,
+          }}
+        >
+          {cardData.map((post, index) => (
+            <Card post={post} key={index}>
+              <View style={{ width: "100%", height: "85%" }}>
+                <ImageLoad
+                  style={{ flex: 2, width: undefined }}
+                  loadingStyle={{ size: "large", color: "black" }}
+                  source={{
+                    uri: `http:${RequestManager.localIPAddress}:3000/${post.img_name}`,
+                  }}
+                />
+              </View>
+              <Text style={{ flex: 1 }}>{post.title}</Text>
+            </Card>
+          ))}
+        </View>
       </ScrollView>
     );
   };
@@ -149,14 +164,18 @@ export function ProfileScreen() {
           title="Saved Cards"
           onPress={selectSavedCards}
         >
-          <Text>Saved Cards</Text>
+          <Text style={tabState ? styles.activeText : styles.normalText}>
+            Saved Cards
+          </Text>
         </Pressable>
         <Pressable
           style={!tabState ? styles.activeButton : styles.button}
           title="My Cards"
           onPress={selectMyCards}
         >
-          <Text>My Cards</Text>
+          <Text style={!tabState ? styles.activeText : styles.normalText}>
+            My Cards
+          </Text>
         </Pressable>
       </View>
       {tabState ? <SavedCards /> : <MyCards />}
@@ -172,16 +191,23 @@ export function ProfileScreen() {
 
 const styles = StyleSheet.create({
   activeButton: {
-    borderBottomColor: "rgb(0, 0, 0)",
-    borderBottomWidth: 3,
+    borderBottomColor: "#8664F6",
+    borderBottomWidth: 4,
     flex: 1,
     alignItems: "center",
-    padding: 10,
+    padding: 20,
+  },
+  activeText: {
+    color: "#8664F6",
+    fontWeight: "bold",
   },
   button: {
     flex: 1,
     alignItems: "center",
-    padding: 10,
+    padding: 20,
+  },
+  normalText: {
+    color: "#202020",
   },
   main: {
     paddingTop: 100,

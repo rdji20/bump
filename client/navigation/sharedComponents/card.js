@@ -14,9 +14,9 @@ const styles = StyleSheet.create({
     flexShrink: 1,
     justifyContent: "flex-start",
     alignContent: "flex-start",
-
-    width: 150,
-    height: 150,
+    margin: 30,
+    width: 200,
+    height: 200,
     borderRadius: 10,
     borderWidth: 3,
     borderColor: "#202020",

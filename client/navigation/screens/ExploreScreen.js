@@ -168,7 +168,7 @@ export function ExploreScreen() {
                 <MaterialIcons
                   name={saved ? "bookmark" : "bookmark-outline"}
                   size={35}
-                  color={saved ? "rgb(95,150,254)" : "white"}
+                  color={saved ? "#8664F6" : "white"}
                   style={styles.buttonIcons}
                 />
               </TouchableOpacity>
@@ -206,7 +206,7 @@ export function ExploreScreen() {
   const Header = () => {
     const pressFilter = (filterIndex) => {
       if (filters[filterIndex]) {
-        setFilters([false, false, false])
+        setFilters([false, false, false]);
       } else {
         let newFilters = [false, false, false];
         newFilters[filterIndex] = true;

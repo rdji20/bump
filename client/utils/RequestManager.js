@@ -2,7 +2,7 @@ import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
 import * as SecureStore from "expo-secure-store";
 
-export const localIPAddress = '172.28.102.217';
+export const localIPAddress = "10.0.0.135";
 
 export async function getDeviceId(temp = false) {
   if (!temp) {
@@ -31,9 +31,7 @@ export async function getCard(cardId) {
 }
 
 export async function getTotalCards() {
-  const response = await fetch(
-    `http://${localIPAddress}:3000/cards/total`
-  );
+  const response = await fetch(`http://${localIPAddress}:3000/cards/total`);
   const responseJson = await response.json();
   if (responseJson.status === "success") {
     return responseJson.payload;
