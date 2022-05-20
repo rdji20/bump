@@ -80,9 +80,11 @@ export const FormikPostUploader = () => {
         hashtag: "",
         desc: "",
       }}
-      onSubmit={(values) => {
+      onSubmit={(values, {resetForm}) => {
         values.imageUrl = image;
         upload(values)
+        resetForm({values: ''});
+        setImage(null);
       }}
       validationSchema={uploadPostSchema}
       validateOnMount={true}

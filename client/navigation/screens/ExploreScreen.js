@@ -2,12 +2,13 @@ import { Entypo, Feather, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect, useRef, useState } from "react";
 import {
+  Animated,
   Image,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
 import { assets } from ".";
 import * as RequestManager from "../../utils/RequestManager";
@@ -25,7 +26,7 @@ export function ExploreScreen() {
   useEffect(() => {
     RequestManager.getRecommendations()
       .then((recommendations) => {
-        recs.current = recommendations;
+        recs.current = recommendations
       })
       .then(() => {
         getCardData(recs.current).then((data) => {
@@ -45,6 +46,24 @@ export function ExploreScreen() {
   const Card = (props) => {
     const [saved, setSaved] = useState(false);
     const [showSaveText, setShowSaveText] = useState(false);
+    const [showFullCard, setShowFull] = useState(false);
+    const slideAnim = useRef(new Animated.Value(40)).current;
+
+    const slideUp = () => {
+      // Will change fadeAnim value to 1 in 5 seconds
+      Animated.timing(slideAnim, {
+        toValue: 65,
+        duration: 500
+      }).start();
+    };
+
+    const slideDown = () => {
+      // Will change fadeAnim value to 1 in 5 seconds
+      Animated.timing(slideAnim, {
+        toValue: 40,
+        duration: 500
+      }).start();
+    };
 
     const {
       title,
@@ -64,6 +83,14 @@ export function ExploreScreen() {
         RequestManager.removeFromSavedCards(card_id);
       }
     }, [saved]);
+
+    useEffect(() => {
+      if (showFullCard) {
+        slideUp();
+      } else {
+        slideDown();
+      }
+    }, [showFullCard]);
 
     const summarize = (desc, len = 40) => {
       if (desc.length > len) {
@@ -113,9 +140,13 @@ export function ExploreScreen() {
               showSaveText ? { marginLeft: 150 } : { opacity: 0, height: 0 }
             }
           />
+          <Animated.View style={{height: slideAnim.interpolate({
+            inputRange: [40, 100],
+            outputRange: ['40%', '100%']
+          })}}>
           <LinearGradient
             colors={["transparent", "rgba(0, 0, 0, 0.9)"]}
-            style={{ height: "40%" }}
+            style={{ height: "100%" }}
           >
             <View
               style={{
@@ -145,8 +176,8 @@ export function ExploreScreen() {
                 />
                 <Text style={styles.text}>{summarize(when, 30)}</Text>
               </View>
-              <TouchableOpacity onPress={() => console.log("click")}>
-                <Text style={styles.text}>{summarize(description)}</Text>
+              <TouchableOpacity onPress={() => setShowFull(!showFullCard)}>
+                <Text style={[styles.text, {paddingRight: '20%'}]}>{(showFullCard) ? description : summarize(description)}</Text>
               </TouchableOpacity>
             </View>
 
@@ -154,8 +185,11 @@ export function ExploreScreen() {
               style={{
                 position: "absolute",
                 alignSelf: "flex-end",
+                justifyContent: "flex-end",
                 paddingRight: 25,
                 paddingTop: 30,
+                paddingBottom: 30,
+                height: '100%'
               }}
             >
               <TouchableOpacity
@@ -188,6 +222,7 @@ export function ExploreScreen() {
               />
             </View>
           </LinearGradient>
+          </Animated.View>
         </View>
       </View>
     );
@@ -322,6 +357,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "rgb(255, 255, 255)",
     paddingVertical: 8,
+    paddingRight: 20
   },
   titleText: {
     fontSize: 28,
