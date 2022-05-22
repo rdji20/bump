@@ -6,9 +6,17 @@ import { Ionicons } from "@expo/vector-icons";
 
 const Tab = createMaterialTopTabNavigator();
 
+const MyTheme = {
+  dark: true,
+  colors: {
+    primary: "white",
+    background: "white",
+  },
+};
+
 export function MyTabs() {
   return (
-    <NavigationContainer>
+    <NavigationContainer theme={MyTheme}>
       <Tab.Navigator
         initialRouteName="Explore"
         tabBarPosition="bottom"
@@ -43,6 +51,7 @@ export function MyTabs() {
 const styles = StyleSheet.create({
   tabBar: {
     paddingBottom: 25,
+    backgroundColor: "white",
   },
   tabBarIndicator: {
     backgroundColor: "white",
