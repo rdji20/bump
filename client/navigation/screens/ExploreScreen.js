@@ -311,7 +311,7 @@ export function ExploreScreen() {
         justifyContent: "center",
         alignItems: "center",
         marginTop: "15%",
-        backgroundColor: "white",
+        backgroundColor: "#202020",
       }}
     >
       <View
@@ -322,10 +322,7 @@ export function ExploreScreen() {
           width: 400,
         }}
       >
-        <Image
-          source={require("../../images/logo_mobile_black.png")}
-          style={styles.logo}
-        />
+        <Image source={require("../../images/LOGO.png")} style={styles.logo} />
       </View>
       <SafeAreaView style={styles.root}>
         <SearchBar
@@ -354,16 +351,20 @@ const styles = StyleSheet.create({
     marginTop: "10%",
     width: "100%",
   },
-  logo: {},
+  logo: {
+    width: 50,
+    height: 50,
+    resizeMode: "contain",
+  },
   activeTab: {
     color: "#8664F6",
-    textDecorationLine: "underline",
     fontWeight: "bold",
     textDecorationColor: "#8664F6",
   },
   tabs: {
     fontSize: 14,
     fontWeight: "500",
+    color: "white",
   },
   title: {
     fontSize: 24,

@@ -4,6 +4,8 @@ import { StyleSheet, TextInput, View, Keyboard, Button } from "react-native";
 import { Feather, Entypo } from "@expo/vector-icons";
 
 const SearchBar = ({ clicked, searchPhrase, setSearchPhrase, setClicked }) => {
+  const [keywords, setKeywords] = React.useState("");
+
   return (
     <View style={styles.container}>
       <View
@@ -21,9 +23,12 @@ const SearchBar = ({ clicked, searchPhrase, setSearchPhrase, setClicked }) => {
         {/* Input field */}
         <TextInput
           style={styles.input}
-          placeholder="Search"
+          placeholder="e.g. Bars, parks, mexican "
           value={searchPhrase}
-          onChangeText={setSearchPhrase}
+          onChangeText={(val) => {
+            setKeywords(val);
+          }}
+          onSubmitEditing={() => console.log(`User typed ${keywords}`)}
           onFocus={() => {
             setClicked(true);
           }}
@@ -37,6 +42,8 @@ const SearchBar = ({ clicked, searchPhrase, setSearchPhrase, setClicked }) => {
             style={{ padding: 1 }}
             onPress={() => {
               setSearchPhrase("");
+              Keyboard.dismiss();
+              setClicked(false);
             }}
           />
         )}
@@ -44,14 +51,7 @@ const SearchBar = ({ clicked, searchPhrase, setSearchPhrase, setClicked }) => {
       {/* cancel button, depending on whether the search bar is clicked or not */}
       {clicked && (
         <View>
-          <Button
-            title="Cancel"
-            color="#202020"
-            onPress={() => {
-              Keyboard.dismiss();
-              setClicked(false);
-            }}
-          ></Button>
+          <Button title="Search" color="#202020" onPress={() => {}}></Button>
         </View>
       )}
     </View>

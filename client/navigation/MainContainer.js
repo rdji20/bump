@@ -9,8 +9,8 @@ const Tab = createMaterialTopTabNavigator();
 const MyTheme = {
   dark: true,
   colors: {
-    primary: "white",
-    background: "white",
+    primary: "black",
+    background: "#202020",
   },
 };
 
@@ -50,10 +50,10 @@ export function MyTabs() {
 
 const styles = StyleSheet.create({
   tabBar: {
-    paddingBottom: 25,
-    backgroundColor: "white",
+    paddingBottom: 30,
+    backgroundColor: "#202020",
   },
   tabBarIndicator: {
-    backgroundColor: "white",
+    backgroundColor: "#202020",
   },
 });
