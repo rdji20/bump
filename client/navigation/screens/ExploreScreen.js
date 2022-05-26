@@ -8,10 +8,12 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
+  SafeAreaView,
 } from "react-native";
 import { assets } from ".";
 import * as RequestManager from "../../utils/RequestManager";
+import SearchBar from "../sharedComponents/search/SearchBar";
 
 export function ExploreScreen() {
   const [cardData, setCardData] = useState([]);
@@ -26,7 +28,7 @@ export function ExploreScreen() {
   useEffect(() => {
     RequestManager.getRecommendations()
       .then((recommendations) => {
-        recs.current = recommendations
+        recs.current = recommendations;
       })
       .then(() => {
         getCardData(recs.current).then((data) => {
@@ -53,7 +55,7 @@ export function ExploreScreen() {
       // Will change fadeAnim value to 1 in 5 seconds
       Animated.timing(slideAnim, {
         toValue: 65,
-        duration: 500
+        duration: 500,
       }).start();
     };
 
@@ -61,7 +63,7 @@ export function ExploreScreen() {
       // Will change fadeAnim value to 1 in 5 seconds
       Animated.timing(slideAnim, {
         toValue: 40,
-        duration: 500
+        duration: 500,
       }).start();
     };
 
@@ -140,88 +142,94 @@ export function ExploreScreen() {
               showSaveText ? { marginLeft: 150 } : { opacity: 0, height: 0 }
             }
           />
-          <Animated.View style={{height: slideAnim.interpolate({
-            inputRange: [40, 100],
-            outputRange: ['40%', '100%']
-          })}}>
-          <LinearGradient
-            colors={["transparent", "rgba(0, 0, 0, 0.9)"]}
-            style={{ height: "100%" }}
+          <Animated.View
+            style={{
+              height: slideAnim.interpolate({
+                inputRange: [40, 100],
+                outputRange: ["40%", "100%"],
+              }),
+            }}
           >
-            <View
-              style={{
-                position: "absolute",
-                paddingLeft: 25,
-                paddingTop: "20%",
-              }}
+            <LinearGradient
+              colors={["transparent", "rgba(0, 0, 0, 0.9)"]}
+              style={{ height: "100%" }}
             >
-              <View style={{ flexDirection: "row" }}>
-                <Text style={styles.nameText}>{title}</Text>
-              </View>
-              <View style={{ flexDirection: "row" }}>
-                <Ionicons
-                  name="location-sharp"
-                  size={18}
-                  color="white"
-                  style={styles.contentIcons}
-                />
-                <Text style={styles.text}>{summarize(where, 30)}</Text>
-              </View>
-              <View style={{ flexDirection: "row" }}>
-                <Feather
-                  name="clock"
-                  size={18}
-                  color="white"
-                  style={styles.contentIcons}
-                />
-                <Text style={styles.text}>{summarize(when, 30)}</Text>
-              </View>
-              <TouchableOpacity onPress={() => setShowFull(!showFullCard)}>
-                <Text style={[styles.text, {paddingRight: '20%'}]}>{(showFullCard) ? description : summarize(description)}</Text>
-              </TouchableOpacity>
-            </View>
-
-            <View
-              style={{
-                position: "absolute",
-                alignSelf: "flex-end",
-                justifyContent: "flex-end",
-                paddingRight: 25,
-                paddingTop: 30,
-                paddingBottom: 30,
-                height: '100%'
-              }}
-            >
-              <TouchableOpacity
-                onPress={() => {
-                  setSaved(
-                    !saved
-                  ); /* Add Animation later for saved/unsaved card*/
+              <View
+                style={{
+                  position: "absolute",
+                  paddingLeft: 25,
+                  paddingTop: "20%",
                 }}
               >
-                <MaterialIcons
-                  name={saved ? "bookmark" : "bookmark-outline"}
-                  size={35}
-                  color={saved ? "#8664F6" : "white"}
-                  style={styles.buttonIcons}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity>
-                <Feather
-                  name="thumbs-down"
-                  size={30}
+                <View style={{ flexDirection: "row" }}>
+                  <Text style={styles.nameText}>{title}</Text>
+                </View>
+                <View style={{ flexDirection: "row" }}>
+                  <Ionicons
+                    name="location-sharp"
+                    size={18}
+                    color="white"
+                    style={styles.contentIcons}
+                  />
+                  <Text style={styles.text}>{summarize(where, 30)}</Text>
+                </View>
+                <View style={{ flexDirection: "row" }}>
+                  <Feather
+                    name="clock"
+                    size={18}
+                    color="white"
+                    style={styles.contentIcons}
+                  />
+                  <Text style={styles.text}>{summarize(when, 30)}</Text>
+                </View>
+                <TouchableOpacity onPress={() => setShowFull(!showFullCard)}>
+                  <Text style={[styles.text, { paddingRight: "20%" }]}>
+                    {showFullCard ? description : summarize(description)}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+
+              <View
+                style={{
+                  position: "absolute",
+                  alignSelf: "flex-end",
+                  justifyContent: "flex-end",
+                  paddingRight: 25,
+                  paddingTop: 30,
+                  paddingBottom: 30,
+                  height: "100%",
+                }}
+              >
+                <TouchableOpacity
+                  onPress={() => {
+                    setSaved(
+                      !saved
+                    ); /* Add Animation later for saved/unsaved card*/
+                  }}
+                >
+                  <MaterialIcons
+                    name={saved ? "bookmark" : "bookmark-outline"}
+                    size={35}
+                    color={saved ? "#8664F6" : "white"}
+                    style={styles.buttonIcons}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity>
+                  <Feather
+                    name="thumbs-down"
+                    size={30}
+                    color="white"
+                    style={styles.buttonIcons}
+                  />
+                </TouchableOpacity>
+                <Entypo
+                  name="dots-three-horizontal"
+                  size={25}
                   color="white"
                   style={styles.buttonIcons}
                 />
-              </TouchableOpacity>
-              <Entypo
-                name="dots-three-horizontal"
-                size={25}
-                color="white"
-                style={styles.buttonIcons}
-              />
-            </View>
-          </LinearGradient>
+              </View>
+            </LinearGradient>
           </Animated.View>
         </View>
       </View>
@@ -238,6 +246,9 @@ export function ExploreScreen() {
     }
   }
 
+  const [searchPhrase, setSearchPhrase] = useState("");
+  const [clicked, setClicked] = useState(false);
+
   const Header = () => {
     const pressFilter = (filterIndex) => {
       if (filters[filterIndex]) {
@@ -253,20 +264,7 @@ export function ExploreScreen() {
       <View style={{ marginBottom: 0 }}>
         <View
           style={{
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            width: 400,
-          }}
-        >
-          <Image
-            source={require("../../images/logo_mobile_black.png")}
-            style={styles.logo}
-          />
-        </View>
-        <View
-          style={{
-            marginTop: 10,
+            marginTop: 0,
             paddingLeft: "10%",
             flexDirection: "row",
             justifyContent: "space-around",
@@ -313,8 +311,27 @@ export function ExploreScreen() {
         justifyContent: "center",
         alignItems: "center",
         marginTop: "15%",
+        backgroundColor: "#202020",
       }}
     >
+      <View
+        style={{
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          width: 400,
+        }}
+      >
+        <Image source={require("../../images/LOGO.png")} style={styles.logo} />
+      </View>
+      <SafeAreaView style={styles.root}>
+        <SearchBar
+          searchPhrase={searchPhrase}
+          setSearchPhrase={setSearchPhrase}
+          clicked={clicked}
+          setClicked={setClicked}
+        />
+      </SafeAreaView>
       <Header />
       <ScrollView
         style={styles.scrollContainer}
@@ -335,18 +352,19 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   logo: {
-    position: "relative",
-    left: 20,
+    width: 50,
+    height: 50,
+    resizeMode: "contain",
   },
   activeTab: {
     color: "#8664F6",
-    textDecorationLine: "underline",
     fontWeight: "bold",
     textDecorationColor: "#8664F6",
   },
   tabs: {
     fontSize: 14,
     fontWeight: "500",
+    color: "white",
   },
   title: {
     fontSize: 24,
@@ -357,7 +375,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "rgb(255, 255, 255)",
     paddingVertical: 8,
-    paddingRight: 20
+    paddingRight: 20,
   },
   titleText: {
     fontSize: 28,
@@ -377,5 +395,16 @@ const styles = StyleSheet.create({
   contentIcons: {
     paddingRight: 5,
     paddingTop: 8,
+  },
+  root: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  title_sb: {
+    width: "100%",
+    marginTop: 20,
+    fontSize: 25,
+    fontWeight: "bold",
+    marginLeft: "10%",
   },
 });

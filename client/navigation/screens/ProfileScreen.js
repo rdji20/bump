@@ -216,7 +216,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   normalText: {
-    color: "#202020",
+    color: "white",
   },
   main: {
     paddingTop: 100,

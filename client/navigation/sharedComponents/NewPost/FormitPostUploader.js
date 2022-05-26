@@ -11,7 +11,7 @@ import * as Yup from "yup";
 import { Formik } from "formik";
 import { Divider } from "@rneui/themed";
 import * as ImagePicker from "expo-image-picker";
-import * as RequestManager from '../../../utils/RequestManager'
+import * as RequestManager from "../../../utils/RequestManager";
 
 const PLACEHOLDER_IMG = "http://www.placecage.com/200/300";
 
@@ -43,32 +43,30 @@ export const FormikPostUploader = () => {
   };
 
   const upload = (values) => {
-      RequestManager.getTotalCards()
-        .then(cardId => {
-          const cardData = {
-            card_id: cardId,
-            index: cardId,
-            title: values.title,
-            description: values.desc,
-            when: values.hours,
-            where: values.location,
-            category: "",
-            tags: values.hashtag
-          }
+    RequestManager.getTotalCards().then((cardId) => {
+      const cardData = {
+        card_id: cardId,
+        index: cardId,
+        title: values.title,
+        description: values.desc,
+        when: values.hours,
+        where: values.location,
+        category: "",
+        tags: values.hashtag,
+      };
 
-          const formData = new FormData(); 
-          formData.append('cardImage', {
-            uri: image,
-            type: 'image/jpeg',
-            name: cardId + '-' + values.title + '.jpg'
-          });
-          formData.append('cardData', JSON.stringify(cardData))
-          formData.append('cardId', cardId);
-          RequestManager.uploadImage(formData);
-          RequestManager.addToMyCards(cardId)
-        })
-  }
-
+      const formData = new FormData();
+      formData.append("cardImage", {
+        uri: image,
+        type: "image/jpeg",
+        name: cardId + "-" + values.title + ".jpg",
+      });
+      formData.append("cardData", JSON.stringify(cardData));
+      formData.append("cardId", cardId);
+      RequestManager.uploadImage(formData);
+      RequestManager.addToMyCards(cardId);
+    });
+  };
 
   return (
     <Formik
@@ -80,10 +78,10 @@ export const FormikPostUploader = () => {
         hashtag: "",
         desc: "",
       }}
-      onSubmit={(values, {resetForm}) => {
+      onSubmit={(values, { resetForm }) => {
         values.imageUrl = image;
-        upload(values)
-        resetForm({values: ''});
+        upload(values);
+        resetForm({ values: "" });
         setImage(null);
       }}
       validationSchema={uploadPostSchema}
@@ -150,7 +148,12 @@ export const FormikPostUploader = () => {
               }}
             >
               <Text
-                style={{ fontSize: 16, marginRight: 100, fontWeight: "600" }}
+                style={{
+                  fontSize: 16,
+                  marginRight: 100,
+                  fontWeight: "600",
+                  color: "white",
+                }}
               >
                 Title
                 <Text style={{ fontSize: 15, color: "red" }}>*</Text>
@@ -179,7 +182,12 @@ export const FormikPostUploader = () => {
               }}
             >
               <Text
-                style={{ fontSize: 16, marginRight: 70, fontWeight: "600" }}
+                style={{
+                  fontSize: 16,
+                  marginRight: 70,
+                  fontWeight: "600",
+                  color: "white",
+                }}
               >
                 Location
               </Text>
@@ -206,7 +214,12 @@ export const FormikPostUploader = () => {
               }}
             >
               <Text
-                style={{ fontSize: 16, marginRight: 23, fontWeight: "600" }}
+                style={{
+                  fontSize: 16,
+                  marginRight: 23,
+                  fontWeight: "600",
+                  color: "white",
+                }}
               >
                 Opening hours
               </Text>
@@ -233,7 +246,12 @@ export const FormikPostUploader = () => {
               }}
             >
               <Text
-                style={{ fontSize: 16, marginRight: 63, fontWeight: "600" }}
+                style={{
+                  fontSize: 16,
+                  marginRight: 63,
+                  fontWeight: "600",
+                  color: "white",
+                }}
               >
                 Hashtags
               </Text>
@@ -260,7 +278,12 @@ export const FormikPostUploader = () => {
               }}
             >
               <Text
-                style={{ fontSize: 16, marginRight: 47, fontWeight: "600" }}
+                style={{
+                  fontSize: 16,
+                  marginRight: 47,
+                  fontWeight: "600",
+                  color: "white",
+                }}
               >
                 Description
               </Text>
