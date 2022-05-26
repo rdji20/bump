@@ -1,5 +1,14 @@
 # Bump
 
-## What are we?
+## Mission
 
-We are a recommendation and search mobile application to find things to do in Seattle
+Assist people with personalized and useful information of places to go and ultimately have fun where they are
+
+## Backend
+
+## Frontend
+
+## Data Engineering
+
+## Data Science
+
