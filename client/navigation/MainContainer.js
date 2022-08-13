@@ -3,6 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { ExploreScreen, CommunityScreen, ProfileScreen } from "./screens";
 import { StyleSheet, Text } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { colors } from "../utils/colors";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -10,7 +11,7 @@ const MyTheme = {
   dark: true,
   colors: {
     primary: "black",
-    background: "#202020",
+    background: colors.white,
   },
 };
 
@@ -33,7 +34,7 @@ export function MyTabs() {
             }
             return <Ionicons name={iconName} size={26} color={color} />;
           },
-          tabBarActiveTintColor: "#8664F6",
+          tabBarActiveTintColor: "#FE5845",
           tabBarInactiveTintColor: "#C4C4C4",
           tabBarShowLabel: false,
           tabBarStyle: styles.tabBar,
@@ -51,9 +52,9 @@ export function MyTabs() {
 const styles = StyleSheet.create({
   tabBar: {
     paddingBottom: 30,
-    backgroundColor: "#202020",
+    backgroundColor: "white",
   },
   tabBarIndicator: {
-    backgroundColor: "#202020",
+    backgroundColor: colors.orangeBump,
   },
 });

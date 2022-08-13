@@ -13,11 +13,11 @@ import {
 } from "react-native";
 import { assets } from ".";
 import * as RequestManager from "../../utils/RequestManager";
-import SearchBar from "../sharedComponents/search/SearchBar";
+import { colors } from "../../utils/colors";
 
 export function ExploreScreen() {
   const [cardData, setCardData] = useState([]);
-  const [filters, setFilters] = useState([false, false, false]);
+  const [filters, setFilters] = useState([false, true, false]);
   const filterMap = useRef({
     Events: 0,
     "Things To Do": 1,
@@ -101,24 +101,12 @@ export function ExploreScreen() {
       return desc;
     };
 
+    /*
+    This is the cards code
+    */
     return (
-      <View
-        style={{
-          backgroundColor: "white",
-          marginBottom: "2%",
-          shadowColor: "black",
-          shadowOpacity: 0.5,
-        }}
-      >
-        <Image
-          source={assets[img_name]}
-          style={{
-            width: "100%",
-            height: 547,
-            resizeMode: "cover",
-            aspectRatio: 1,
-          }}
-        />
+      <View style={styles.cardInfoContainer}>
+        <Image source={assets[img_name]} style={styles.cardImage} />
         <View
           style={{
             position: "absolute",
@@ -152,7 +140,7 @@ export function ExploreScreen() {
           >
             <LinearGradient
               colors={["transparent", "rgba(0, 0, 0, 0.9)"]}
-              style={{ height: "100%" }}
+              style={{ height: "100%", borderRadius: 20 }}
             >
               <View
                 style={{
@@ -210,7 +198,7 @@ export function ExploreScreen() {
                   <MaterialIcons
                     name={saved ? "bookmark" : "bookmark-outline"}
                     size={35}
-                    color={saved ? "#8664F6" : "white"}
+                    color={saved ? "#FE5845" : "white"}
                     style={styles.buttonIcons}
                   />
                 </TouchableOpacity>
@@ -246,9 +234,6 @@ export function ExploreScreen() {
     }
   }
 
-  const [searchPhrase, setSearchPhrase] = useState("");
-  const [clicked, setClicked] = useState(false);
-
   const Header = () => {
     const pressFilter = (filterIndex) => {
       if (filters[filterIndex]) {
@@ -277,27 +262,23 @@ export function ExploreScreen() {
         >
           <TouchableOpacity onPress={() => pressFilter(0)}>
             {filters[0] ? (
-              <Text style={[styles.tabs, styles.activeTab]}>{"Events"}</Text>
+              <Text style={[styles.tabs, styles.activeTab]}>{"For u"}</Text>
             ) : (
-              <Text style={styles.tabs}>{"Events"}</Text>
+              <Text style={styles.tabs}>{"For u"}</Text>
             )}
           </TouchableOpacity>
           <TouchableOpacity onPress={() => pressFilter(1)}>
             {filters[1] ? (
-              <Text style={[styles.tabs, styles.activeTab]}>
-                {"Things to do"}
-              </Text>
+              <Text style={[styles.tabs, styles.activeTab]}>{"Trending"}</Text>
             ) : (
-              <Text style={styles.tabs}>{"Things to do"}</Text>
+              <Text style={styles.tabs}>{"Trending"}</Text>
             )}
           </TouchableOpacity>
           <TouchableOpacity onPress={() => pressFilter(2)}>
             {filters[2] ? (
-              <Text style={[styles.tabs, styles.activeTab]}>
-                {"Food & Drinks"}
-              </Text>
+              <Text style={[styles.tabs, styles.activeTab]}>{"Nearby"}</Text>
             ) : (
-              <Text style={styles.tabs}>{"Food & Drinks"}</Text>
+              <Text style={styles.tabs}>{"Nearby"}</Text>
             )}
           </TouchableOpacity>
         </View>
@@ -305,13 +286,18 @@ export function ExploreScreen() {
     );
   };
 
+  /*
+  We use these to search for specific queries on the cards the user is looking for.
+  */
+  const [searchQuery, setSearchQuery] = React.useState("");
+  const onChangeSearch = (query) => setSearchQuery(query);
+
   return (
     <View
       style={{
         justifyContent: "center",
         alignItems: "center",
         marginTop: "15%",
-        backgroundColor: "#202020",
       }}
     >
       <View
@@ -321,17 +307,17 @@ export function ExploreScreen() {
           alignItems: "center",
           width: 400,
         }}
-      >
-        <Image source={require("../../images/LOGO.png")} style={styles.logo} />
-      </View>
-      <SafeAreaView style={styles.root}>
-        <SearchBar
-          searchPhrase={searchPhrase}
-          setSearchPhrase={setSearchPhrase}
-          clicked={clicked}
-          setClicked={setClicked}
+      ></View>
+      <View style={styles.logoPosition}>
+        <Image
+          style={styles.mainLogo}
+          source={require("../../images/logo_bump_spellout.png")}
         />
-      </SafeAreaView>
+        <Image
+          style={styles.searchButton}
+          source={require("../../images/search_icon.png")}
+        />
+      </View>
       <Header />
       <ScrollView
         style={styles.scrollContainer}
@@ -340,16 +326,42 @@ export function ExploreScreen() {
         snapToInterval={555}
         disableScrollViewPanResponder={true}
       >
-        {cards}
+        <View style={styles.containerInsideScrollContainer}>{cards}</View>
       </ScrollView>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  searchButton: {
+    position: "absolute",
+    right: 30,
+  },
+
+  containerInsideScrollContainer: {
+    marginTop: 10,
+  },
+
+  logoPosition: {
+    flex: 1,
+    width: "100%",
+    marginBottom: 20,
+    alignItems: "flex-start",
+    marginBottom: 50,
+    marginTop: 0,
+    flexDirection: "row",
+  },
+
+  mainLogo: {
+    width: 103,
+    height: 37,
+    resizeMode: "cover",
+    marginBottom: 20,
+    marginLeft: 22,
+  },
   scrollContainer: {
     marginTop: "10%",
-    width: "100%",
+    width: "90%",
   },
   logo: {
     width: 50,
@@ -357,14 +369,15 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
   },
   activeTab: {
-    color: "#8664F6",
+    color: colors.orangeBump,
     fontWeight: "bold",
-    textDecorationColor: "#8664F6",
+    fontSize: 18,
+    textDecorationColor: "#FE5845",
   },
   tabs: {
-    fontSize: 14,
+    fontSize: 18,
     fontWeight: "500",
-    color: "white",
+    color: "black",
   },
   title: {
     fontSize: 24,
@@ -406,5 +419,23 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: "bold",
     marginLeft: "10%",
+  },
+  searchBar: {
+    height: 45,
+    width: "80%",
+    borderRadius: 50,
+    zIndex: 3,
+  },
+  cardInfoContainer: {
+    shadowColor: colors.eerieBlack,
+    shadowOpacity: 0.5,
+    marginBottom: 20,
+    position: "relative",
+  },
+  cardImage: {
+    width: "100%",
+    height: 570,
+    resizeMode: "cover",
+    borderRadius: 20,
   },
 });

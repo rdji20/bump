@@ -8,10 +8,10 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
+  Image,
 } from "react-native";
 import { MyTabs } from "./navigation/MainContainer";
 import * as RequestManager from "./utils/RequestManager";
-import { LinearGradient } from "expo-linear-gradient";
 
 export default function App() {
   LogBox.ignoreAllLogs();
@@ -27,6 +27,7 @@ export default function App() {
         console.log(firstTimeUser + " " + deviceId);
         global.deviceId = deviceId;
         if (!firstTimeUser) setInit(true);
+        console.log("done" + deviceId);
       })
       .then(() => console.log("Current DeviceID:" + global.deviceId));
   }, []);
@@ -36,32 +37,33 @@ export default function App() {
   ) : (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
-        <LinearGradient
-          colors={["#4D4DFF", "#FF006E"]}
-          start={{ x: 0, y: 0.2 }}
-          end={{ x: 0.5, y: 1 }}
-          style={styles.container_gradient}
+        {console.log("hello world")}
+        <Image
+          style={styles.tinyLogo}
+          source={require("./images/Bump_Logo_Spellout_orange.png")}
+        />
+        <Text style={styles.paragraph}>Welcome to Bump</Text>
+
+        <Text style={styles.prompt}>
+          Tell us a lil bit about you so we can start recommending you things to
+          do.
+        </Text>
+
+        <TextInput
+          multiline
+          style={styles.input}
+          placeholder="e.g. I like netflix, coffee and going to hikes"
+          onChangeText={(val) => setUserInfo(val)}
+        />
+
+        <TouchableOpacity
+          style={styles.submitButton}
+          onPress={() => {
+            RequestManager.addUser(userInfo).then(() => setInit(true));
+          }}
         >
-          <Text style={styles.paragraph}>Welcome to Bump</Text>
-
-          <Text style={styles.prompt}>Tell us a lil bit about yourself.</Text>
-
-          <TextInput
-            multiline
-            style={styles.input}
-            placeholder="e.g. I like netflix, coffee and going to hikes"
-            onChangeText={(val) => setUserInfo(val)}
-          />
-
-          <TouchableOpacity
-            style={styles.submitButton}
-            onPress={() => {
-              RequestManager.addUser(userInfo).then(() => setInit(true));
-            }}
-          >
-            <Text style={styles.submitButtonText}> Submit </Text>
-          </TouchableOpacity>
-        </LinearGradient>
+          <Text style={styles.submitButtonText}> Submit </Text>
+        </TouchableOpacity>
       </View>
     </TouchableWithoutFeedback>
   );
@@ -73,30 +75,32 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: "#FE5845",
   },
   paragraph: {
     margin: 24,
-    fontSize: 18,
+    fontSize: 30,
     fontWeight: "bold",
     color: "white",
   },
   prompt: {
     marginTop: 10,
     marginBottom: 10,
-    fontSize: 12,
-    color: "#FF006E",
+    width: "60%",
+    fontSize: 18,
+    color: "#000000",
   },
   input: {
     margin: 15,
-    borderColor: "#FF006E",
-    borderWidth: 1,
+    borderColor: "white",
+    borderWidth: 3,
     borderRadius: 10,
     padding: 8,
     height: 100,
     width: 200,
   },
   submitButton: {
-    backgroundColor: "#FF006E",
+    backgroundColor: "#000000",
     padding: 10,
     marginVertical: 20,
     height: 40,
@@ -112,5 +116,10 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     alignItems: "center",
     justifyContent: "center",
+  },
+  tinyLogo: {
+    width: 50,
+    height: 50,
+    resizeMode: "stretch",
   },
 });

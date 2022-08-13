@@ -2,8 +2,11 @@ import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
 import * as SecureStore from "expo-secure-store";
 
-export const localIPAddress = "10.18.169.244";
+export const localIPAddress = "192.168.86.45";
 
+/*
+  This function mkaes sure to start a new "user" if the device is not registered
+*/
 export async function getDeviceId(temp = false) {
   if (!temp) {
     await SecureStore.deleteItemAsync("deviceId");
@@ -16,6 +19,7 @@ export async function getDeviceId(temp = false) {
     deviceId = uuidv4();
     SecureStore.setItemAsync("deviceId", JSON.stringify(deviceId));
   }
+  console.log(deviceId);
   return { firstTimeUser, deviceId };
 }
 
@@ -23,6 +27,7 @@ export async function getCard(cardId) {
   const response = await fetch(
     `http://${localIPAddress}:3000/cards?cardId=${cardId}`
   );
+  console.log(response);
   const responseJson = await response.json();
   if (responseJson.status === "success") {
     return responseJson.payload;

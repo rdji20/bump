@@ -125,7 +125,7 @@ app.add_middleware(
 
 @app.get("/")
 async def root():
-    return {"message": "Hello World"}
+    return {"message": "Good morning mr.West"}
 
 @app.get("/bumprecs_sea/{query}")
 async def get_recommendations(query):

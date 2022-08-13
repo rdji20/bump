@@ -12,6 +12,7 @@ import * as RequestManager from "../../utils/RequestManager";
 import Card from "../sharedComponents/card";
 import { assets } from ".";
 import ImageLoad from "react-native-image-placeholder";
+import { colors } from "../../utils/colors";
 
 export function ProfileScreen() {
   const Tab = createMaterialTopTabNavigator();
@@ -200,14 +201,14 @@ export function ProfileScreen() {
 
 const styles = StyleSheet.create({
   activeButton: {
-    borderBottomColor: "#8664F6",
+    borderBottomColor: colors.orangeBump,
     borderBottomWidth: 4,
     flex: 1,
     alignItems: "center",
     padding: 20,
   },
   activeText: {
-    color: "#8664F6",
+    color: colors.orangeBump,
     fontWeight: "bold",
   },
   button: {
@@ -216,7 +217,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   normalText: {
-    color: "white",
+    color: colors.eerieBlack,
   },
   main: {
     paddingTop: 100,
