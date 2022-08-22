@@ -11,6 +11,7 @@ import {
   View,
   SafeAreaView,
 } from "react-native";
+import { Searchbar } from "react-native-paper";
 import { assets } from ".";
 import * as RequestManager from "../../utils/RequestManager";
 import { colors } from "../../utils/colors";
@@ -139,17 +140,18 @@ export function ExploreScreen() {
             }}
           >
             <LinearGradient
-              colors={["transparent", "rgba(0, 0, 0, 0.9)"]}
+              colors={["transparent", "rgba(0, 0, 0, 0.95)"]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 0, y: 1 }}
               style={{ height: "100%", borderRadius: 20 }}
             >
               <View
                 style={{
                   position: "absolute",
                   paddingLeft: 25,
-                  paddingTop: "20%",
                 }}
               >
-                <View style={{ flexDirection: "row" }}>
+                <View style={styles.descriptionContainer}>
                   <Text style={styles.nameText}>{title}</Text>
                 </View>
                 <View style={{ flexDirection: "row" }}>
@@ -286,12 +288,9 @@ export function ExploreScreen() {
     );
   };
 
-  /*
-  We use these to search for specific queries on the cards the user is looking for.
+  /* 
+  This is the main layout of the bumpCards screen
   */
-  const [searchQuery, setSearchQuery] = React.useState("");
-  const onChangeSearch = (query) => setSearchQuery(query);
-
   return (
     <View
       style={{
@@ -300,30 +299,24 @@ export function ExploreScreen() {
         marginTop: "15%",
       }}
     >
-      <View
-        style={{
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          width: 400,
-        }}
-      ></View>
-      <View style={styles.logoPosition}>
+      <View>
         <Image
           style={styles.mainLogo}
           source={require("../../images/logo_bump_spellout.png")}
         />
-        <Image
-          style={styles.searchButton}
-          source={require("../../images/search_icon.png")}
-        />
       </View>
+      <Searchbar
+        style={styles.searchBar}
+        inputStyle={styles.searchBarInput}
+        placeholder={"Recommend me ... “lake activities”"}
+        icon={require("../../images/thumbs_up_big.png")}
+      />
       <Header />
       <ScrollView
         style={styles.scrollContainer}
         snapToAlignment={"start"}
         decelerationRate={"fast"}
-        snapToInterval={555}
+        snapToInterval={590}
         disableScrollViewPanResponder={true}
       >
         <View style={styles.containerInsideScrollContainer}>{cards}</View>
@@ -333,6 +326,9 @@ export function ExploreScreen() {
 }
 
 const styles = StyleSheet.create({
+  descriptionContainer: {
+    width: "80%",
+  },
   searchButton: {
     position: "absolute",
     right: 30,
@@ -353,11 +349,10 @@ const styles = StyleSheet.create({
   },
 
   mainLogo: {
-    width: 103,
-    height: 37,
+    width: 95,
+    height: 33.77,
     resizeMode: "cover",
     marginBottom: 20,
-    marginLeft: 22,
   },
   scrollContainer: {
     marginTop: "10%",
@@ -397,7 +392,7 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
   },
   nameText: {
-    fontSize: 20,
+    fontSize: 30,
     color: "rgb(255, 255, 255)",
     fontWeight: "bold",
     paddingVertical: 5,
@@ -421,14 +416,15 @@ const styles = StyleSheet.create({
     marginLeft: "10%",
   },
   searchBar: {
-    height: 45,
-    width: "80%",
+    height: 37,
+    width: 313,
     borderRadius: 50,
     zIndex: 3,
   },
+  searchBarInput: {
+    fontSize: 12,
+  },
   cardInfoContainer: {
-    shadowColor: colors.eerieBlack,
-    shadowOpacity: 0.5,
     marginBottom: 20,
     position: "relative",
   },

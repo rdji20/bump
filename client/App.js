@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import color from "color";
+import React, { useEffect, useState, useRef } from "react";
 import {
   Keyboard,
   LogBox,
@@ -9,8 +10,11 @@ import {
   TouchableWithoutFeedback,
   View,
   Image,
+  ScrollView,
+  SafeAreaView,
 } from "react-native";
 import { MyTabs } from "./navigation/MainContainer";
+import { colors } from "./utils/colors";
 import * as RequestManager from "./utils/RequestManager";
 
 export default function App() {
@@ -32,23 +36,87 @@ export default function App() {
       .then(() => console.log("Current DeviceID:" + global.deviceId));
   }, []);
 
+  const [stepScreen, setStepScreen] = useState([true, false]);
+  const [selectedOption, setSelection] = useState([false, false]);
+
+  const pressOption = (optionIndex) => {
+    // Select option 1
+    if (optionIndex == 0) {
+      if (!selectedOption[optionIndex]) {
+        setSelection([true, false]);
+      }
+    } else {
+      if (!selectedOption[optionIndex]) {
+        setSelection([false, true]);
+      }
+    }
+  };
+
+  const stepScreens = useRef({
+    explorer: 0,
+    seeker: 1,
+  });
+
   return initialized ? (
     <MyTabs />
   ) : (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={styles.container}>
-        {console.log("hello world")}
-        <Image
-          style={styles.tinyLogo}
-          source={require("./images/Bump_Logo_Spellout_orange.png")}
-        />
-        <Text style={styles.paragraph}>Welcome to Bump</Text>
+    /*
+    These are the "first interaction" screens which are displayed when
+    the user gets in the app the first time.
+    */
+    <SafeAreaView>
+      <ScrollView>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={styles.container}>
+            <View style={styles.horizontalContainer}>
+              <Image
+                style={styles.mainLogo}
+                source={require("./images/Bump_Logo_Spellout_orange.png")}
+              />
+              <Text style={styles.paragraph}>BETA</Text>
+            </View>
 
-        <Text style={styles.prompt}>
-          Tell us a lil bit about you so we can start recommending you things to
-          do.
-        </Text>
-
+            <Text style={styles.prompt}>Choose what describes you best:</Text>
+            <View style={styles.optionsContainer}>
+              <TouchableOpacity onPress={() => pressOption(0)}>
+                {selectedOption[0] ? (
+                  <View style={styles.goalSelected}>
+                    <Text>
+                      I want to explore new things, activites and places
+                    </Text>
+                  </View>
+                ) : (
+                  <View style={styles.goal}>
+                    <Text>
+                      I want to explore new things, activites and places
+                    </Text>
+                  </View>
+                )}
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => pressOption(1)}>
+                {selectedOption[1] ? (
+                  <View style={styles.goalSelected}>
+                    <Text>
+                      I want to seek things, activites and places I already like
+                    </Text>
+                  </View>
+                ) : (
+                  <View style={styles.goal}>
+                    <Text>
+                      I want to seek things, activites and places I already like
+                    </Text>
+                  </View>
+                )}
+              </TouchableOpacity>
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+        <View>
+          <Text style={styles.prompt}>
+            Select the cards you would probably do:
+          </Text>
+          <Text>If there's none click refresh. Select up to 5.</Text>
+        </View>
         <TextInput
           multiline
           style={styles.input}
@@ -64,8 +132,8 @@ export default function App() {
         >
           <Text style={styles.submitButtonText}> Submit </Text>
         </TouchableOpacity>
-      </View>
-    </TouchableWithoutFeedback>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
@@ -75,13 +143,11 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#FE5845",
   },
   paragraph: {
-    margin: 24,
     fontSize: 30,
     fontWeight: "bold",
-    color: "white",
+    color: colors.orangeBump,
   },
   prompt: {
     marginTop: 10,
@@ -117,9 +183,34 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  tinyLogo: {
-    width: 50,
-    height: 50,
-    resizeMode: "stretch",
+  mainLogo: {
+    width: 95,
+    height: 33.77,
+    resizeMode: "cover",
+    marginBottom: 20,
+  },
+  goal: {
+    width: 150,
+    height: 150,
+    backgroundColor: colors.bumpGrey,
+    margin: 10,
+    borderRadius: 10,
+  },
+  goalSelected: {
+    width: 150,
+    height: 150,
+    backgroundColor: "#F9604680",
+
+    margin: 10,
+    borderRadius: 10,
+  },
+  optionsContainer: {
+    flexDirection: "row",
+  },
+  horizontalContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 30,
   },
 });
