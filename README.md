@@ -1,14 +1,5 @@
 # Bump
 
-## Mission
-
-Assist people with personalized and useful information of places to go and ultimately have fun where they are
-
-## Backend
-
-## Frontend
-
-## Data Engineering
-
-## Data Science
-
+## Start
+1. Follow this instruction to create SSH -> link https://nira.com/how-to-clone-a-private-repository-in-github/
+2. Clone repo with SSH
