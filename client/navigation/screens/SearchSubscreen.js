@@ -26,14 +26,25 @@ export function SearchSubscreen() {
           value={searchQuery}
         />
       </View>
-      <View style={{ flex: 1, padding: 16, backgroundColor: "blue" }}>
+      <ScrollView contentContainerStyle={styles.searchShowcase}>
         <CardInfo />
-      </View>
+        <CardInfo />
+        <CardInfo />
+        <CardInfo />
+      </ScrollView>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  searchShowcase: {
+    flex: 1,
+    padding: 16,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+    flexWrap: "wrap",
+  },
   container: {
     flex: 1,
   },
