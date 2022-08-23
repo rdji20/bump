@@ -305,12 +305,15 @@ export function ExploreScreen() {
           source={require("../../images/logo_bump_spellout.png")}
         />
       </View>
+      {/* 
+      There is not enough data for this but we have to implement it later
+      
       <Searchbar
         style={styles.searchBar}
         inputStyle={styles.searchBarInput}
         placeholder={"Recommend me ... “lake activities”"}
         icon={require("../../images/thumbs_up_big.png")}
-      />
+      /> */}
       <Header />
       <ScrollView
         style={styles.scrollContainer}
