@@ -16,19 +16,23 @@ export function SearchSubscreen() {
   const [searchQuery, setQuery] = useState("");
   console.log(searchQuery);
   return (
-    <SafeAreaView>
-      <View style={styles.container}></View>
+    <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.searchBar}>
-        <TextInput
-          styles={styles.inputSearch}
-          onChangeText={setQuery}
-          label="Search for especific  venues, events, restaurants, etc"
-        />
+        <View styles={styles.inputSearch}>
+          <TextInput
+            style={{ width: "100%" }}
+            onChangeText={setQuery}
+            label="Search for especific  venues, events, restaurants, etc"
+          />
+        </View>
         <View style={styles.button}>
           <TouchableOpacity>
             <Text>Search</Text>
           </TouchableOpacity>
         </View>
+      </View>
+      <View style={{ flex: 1, padding: 16, backgroundColor: "blue" }}>
+        <Text>hello</Text>
       </View>
     </SafeAreaView>
   );
@@ -39,13 +43,14 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   searchBar: {
-    width: "80%",
+    flex: 1,
+    flexDirection: "row",
   },
   button: {
-    alignItems: "center",
-    backgroundColor: "#DDDDDD",
-    width: 100,
-    padding: 10,
+    flex: 1,
+    backgroundColor: "black",
   },
-  inputSearch: {},
+  inputSearch: {
+    flex: 1,
+  },
 });
