@@ -30,7 +30,6 @@ export function SearchSubscreen() {
         <CardInfo />
         <CardInfo />
         <CardInfo />
-        <CardInfo />
       </ScrollView>
     </SafeAreaView>
   );

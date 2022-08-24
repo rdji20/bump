@@ -7,7 +7,7 @@ import {
   SearchSubscreen,
 } from "./screens";
 import { StyleSheet, Text } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { colors } from "../utils/colors";
 
 const Tab = createMaterialTopTabNavigator();
@@ -31,7 +31,15 @@ export function MyTabs() {
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
             if (route.name == "Explore") {
-              iconName = focused ? "copy" : "copy-outline";
+              iconName = focused ? "home-roof" : "home-roof";
+              return (
+                <MaterialCommunityIcons
+                  style={styles.icons}
+                  name="home-roof"
+                  size={30}
+                  color={color}
+                />
+              );
             } else if (route.name == "Community") {
               iconName = focused ? "share-social" : "share-social-outline";
             } else if (route.name == "Search") {

@@ -1,14 +1,11 @@
 import React from "react";
 import { Image, View, Text, StyleSheet, ImageBackground } from "react-native";
-import { Card } from "react-native-paper";
 
 export const CardInfo = ({ card = {} }) => {
   const {
     name = "Bump HQ",
     icon,
-    photo = {
-      url: "https://raw.githubusercontent.com/rdji20/bump/main/client/images/gradient_default_card.png?token=GHSAT0AAAAAABWWZVN5CJZGMAX2WWTOBX5KYYFEZSQ",
-    },
+    photo = "../../images/gradient_default_card.png",
     location = "10514 Riviera Pl 98125",
     isOpenNow = true,
     keywords = ["lakehouse", "HQ", "Kayak"],
@@ -16,7 +13,7 @@ export const CardInfo = ({ card = {} }) => {
   return (
     <View style={styles.cardContainer}>
       <ImageBackground
-        source={photo}
+        source={require("../../images/gradient_default_card.png")}
         imageStyle={{ borderRadius: 13 }}
         resizeMode="cover"
         style={styles.image}
