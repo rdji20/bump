@@ -9,6 +9,7 @@ import {
 import { StyleSheet, Text } from "react-native";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { colors } from "../utils/colors";
+import { HomeScreen } from "./screens/HomeScreen";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -40,6 +41,16 @@ export function MyTabs() {
                   color={color}
                 />
               );
+            } else if (route.name == "Home") {
+              iconName = focused ? "home-roof" : "home-roof";
+              return (
+                <MaterialCommunityIcons
+                  style={styles.icons}
+                  name="home-roof"
+                  size={30}
+                  color={color}
+                />
+              );
             } else if (route.name == "Community") {
               iconName = focused ? "share-social" : "share-social-outline";
             } else if (route.name == "Search") {
@@ -50,7 +61,7 @@ export function MyTabs() {
             return (
               <Ionicons
                 style={styles.icons}
-                size="large"
+                size="medium"
                 name={iconName}
                 size={30}
                 color={color}
@@ -66,6 +77,7 @@ export function MyTabs() {
       >
         <Tab.Screen name="Search" component={SearchSubscreen} />
         <Tab.Screen name="Explore" component={ExploreScreen} />
+        <Tab.Screen name="Home" component={HomeScreen} />
         <Tab.Screen name="Community" component={CommunityScreen} />
         <Tab.Screen name="Profile" component={ProfileScreen} />
       </Tab.Navigator>

@@ -2,6 +2,7 @@ export * from "./CommunityScreen";
 export * from "./ExploreScreen";
 export * from "./ProfileScreen";
 export * from "./SearchSubscreen";
+export * from "./HomeScreen";
 
 export const assets = {
   "202_sea.jpg": require("../../sea_images_folder_resized/202_sea.jpg"),

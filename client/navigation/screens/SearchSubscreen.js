@@ -7,14 +7,16 @@ import {
   SafeAreaView,
   Text,
   View,
+  FlatList,
 } from "react-native";
 import { Searchbar, TextInput } from "react-native-paper";
 import { colors } from "../../utils/colors";
 import { CardInfo } from "../sharedComponents/CardInfo";
+import { cardsRequestCurrentCity } from "../../services/cards/cards.service";
 
 export function SearchSubscreen() {
   const [searchQuery, setSearchQuery] = React.useState("");
-
+  cardsRequestCurrentCity;
   const onChangeSearch = (query) => setSearchQuery(query);
 
   return (
@@ -26,11 +28,26 @@ export function SearchSubscreen() {
           value={searchQuery}
         />
       </View>
-      <ScrollView contentContainerStyle={styles.searchShowcase}>
-        <CardInfo />
-        <CardInfo />
-        <CardInfo />
-      </ScrollView>
+      <FlatList
+        data={[
+          { description: 1 },
+          { description: 2 },
+          { description: 3 },
+          { description: 4 },
+          { description: 5 },
+          { description: 6 },
+          { description: 7 },
+        ]}
+        contentContainerStyle={{
+          padding: 16,
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "flex-start",
+          flexWrap: "wrap",
+        }}
+        renderItem={() => <CardInfo />}
+        keyExtractor={(item) => item.name}
+      ></FlatList>
     </SafeAreaView>
   );
 }
