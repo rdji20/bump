@@ -1,62 +1,109 @@
-import React from "react";
-import { Image, View, Text, StyleSheet, ImageBackground } from "react-native";
+import color from "color";
+import React, { useState } from "react";
+import {
+  Image,
+  View,
+  Text,
+  StyleSheet,
+  ImageBackground,
+  Pressable,
+} from "react-native";
 
 export const HomeCardInfo = ({ card = {} }) => {
   const {
-    id = 12,
-    name = "Bump HQ",
+    title = "Bump HQ",
     icon,
     description = "This is bump's first HQ when it was just a dream",
-    photo = "../../images/gradient_default_card.png",
+    linkImage = "../../images/gradient_default_card.png",
     location = "10514 Riviera Pl 98125",
     isOpenNow = true,
-    keywords = ["lakehouse", "HQ", "Kayak"],
+    keywords = ["lakehouse ", "HQ ", "Kayak "],
+    day = "Monday",
   } = card;
+
+  [clicked, setClicked] = useState(false);
+
+  const cardViewToggle = () => {
+    if (clicked) {
+      setClicked(false);
+    } else {
+      setClicked(true);
+    }
+  };
+
   return (
-    <View style={styles.cardContainer}>
-      <ImageBackground
-        source={require("../../images/gradient_default_card.png")}
-        imageStyle={{ borderRadius: 26 }}
-        resizeMode="cover"
-        style={styles.image}
-      >
-        <View style={{ flex: 1 }}>
-          <View style={{ flex: 1 }}></View>
-          <Text style={styles.title}>{name}</Text>
-        </View>
-        <View style={{ flex: 0.2 }}>
-          <View style={styles.interactions}></View>
-        </View>
-      </ImageBackground>
-    </View>
+      <View style={styles.cardContainer}>
+        <ImageBackground
+          source={require("../../images/gradient_default_card.png")}
+          imageStyle={{ borderRadius: 26 }}
+          resizeMode="cover"
+          style={styles.image}
+        >
+          <View>
+            <Text style={styles.dayHeader}>{day}</Text>
+          </View>
+          <View style={styles.cardContent}>
+            <View style={{ flex: 1 }}>
+              <View style={{ flex: 0.5 }}></View>
+              <View style={{ flex: 1 }}>
+                <Text numberOfLines={5} style={styles.title}>
+                  {title}
+                </Text>
+                <Text style={styles.keywordsText} numberOfLines={1}>
+                  {keywords}
+                </Text>
+              </View>
+            </View>
+            <View style={{ flex: 0.5 }}>
+              <View style={styles.interactions}></View>
+            </View>
+          </View>
+        </ImageBackground>
+      </View>
   );
 };
 
 const styles = StyleSheet.create({
+  dayHeader: {
+    textAlign: "center",
+    fontSize: 30,
+    color: "white",
+    fontWeight: "bold",
+    marginTop: 10,
+  },
   cardContainer: {
-    width: 356,
-    height: 562,
-    borderRadius: 13,
-    margin: 10,
+    width: 400,
+    height: 400,
+    borderRadius: 10,
+    margin: 5,
     flex: 1,
   },
   image: {
     flex: 1,
     justifyContent: "center",
     borderRadius: 26,
+  },
+  cardContent: {
+    flex: 1,
+    justifyContent: "center",
     flexDirection: "row",
   },
   title: {
     color: "white",
-    fontSize: 30,
+    fontSize: 24,
     fontWeight: "bold",
-    paddingLeft: 10,
-    marginLeft: 10,
+    marginLeft: 20,
     flex: 1,
   },
   interactions: {
-    backgroundColor: "black",
+    // backgroundColor: "black",
     flex: 1,
-    borderRadius: 26,
+    borderRadius: 30,
+  },
+  keywordsText: {
+    flex: 0.5,
+    fontSize: 14,
+    color: "white",
+    marginLeft: 20,
   },
 });

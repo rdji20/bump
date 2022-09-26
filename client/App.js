@@ -16,8 +16,42 @@ import {
 import { MyTabs } from "./navigation/MainContainer";
 import { colors } from "./utils/colors";
 import * as RequestManager from "./utils/RequestManager";
+import { CardsContextProvider } from "./services/cards/cards.context";
+import { ChooseCardsSubSection } from "./navigation/sharedComponents/ChooseCardsSubSection";
+// import * as firebase from "firebase";
+
+// const firebaseConfig = {
+//   apiKey: "AIzaSyByGEkhh6pIG9r62zK_qPdFM4oCsZ-onVM",
+//   authDomain: "bumpai.firebaseapp.com",
+//   databaseURL: "https://bumpai-default-rtdb.firebaseio.com",
+//   projectId: "bumpai",
+//   storageBucket: "bumpai.appspot.com",
+//   messagingSenderId: "308011302935",
+//   appId: "1:308011302935:web:c9bb6ecd6cd8806060dc52",
+//   measurementId: "G-PFCVZMXQ31",
+// };
+
+// firebase.initializeApp(firebaseConfig);
+
+// const [isAuthenticated, setIsAuthenticated] = useState(false);
+// // useEffect(() => {
+// //   firebase.auth().su
+// // }, []);
+
+// const auth = getAuth();
+// signInAnonymously(auth)
+//   .then((user) => {
+//     console.log(user);
+//     setIsAuthenticated(true);
+//   })
+//   .catch((error) => {
+//     const errorCode = error.code;
+//     const errorMessage = error.message;
+//     console.log(errorMessage);
+//   });
 
 export default function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   LogBox.ignoreAllLogs();
 
   [initialized, setInit] = useState(false);
@@ -58,82 +92,89 @@ export default function App() {
   });
 
   return initialized ? (
-    <MyTabs />
+    <CardsContextProvider>
+      <MyTabs />
+    </CardsContextProvider>
   ) : (
     /*
     These are the "first interaction" screens which are displayed when
     the user gets in the app the first time.
     */
-    <SafeAreaView>
-      <ScrollView>
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View style={styles.container}>
-            <View style={styles.horizontalContainer}>
-              <Image
-                style={styles.mainLogo}
-                source={require("./images/Bump_Logo_Spellout_orange.png")}
-              />
-              <Text style={styles.paragraph}>BETA</Text>
-            </View>
+    <CardsContextProvider>
+      <SafeAreaView>
+        <ScrollView>
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <View style={styles.container}>
+              <View style={styles.horizontalContainer}>
+                <Image
+                  style={styles.mainLogo}
+                  source={require("./images/Bump_Logo_Spellout_orange.png")}
+                />
+                <Text style={styles.paragraph}>BETA</Text>
+              </View>
 
-            <Text style={styles.prompt}>Choose what describes you best:</Text>
-            <View style={styles.optionsContainer}>
-              <TouchableOpacity onPress={() => pressOption(0)}>
-                {selectedOption[0] ? (
-                  <View style={styles.goalSelected}>
-                    <Text>
-                      I want to explore new things, activites and places
-                    </Text>
-                  </View>
-                ) : (
-                  <View style={styles.goal}>
-                    <Text>
-                      I want to explore new things, activites and places
-                    </Text>
-                  </View>
-                )}
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => pressOption(1)}>
-                {selectedOption[1] ? (
-                  <View style={styles.goalSelected}>
-                    <Text>
-                      I want to seek things, activites and places I already like
-                    </Text>
-                  </View>
-                ) : (
-                  <View style={styles.goal}>
-                    <Text>
-                      I want to seek things, activites and places I already like
-                    </Text>
-                  </View>
-                )}
-              </TouchableOpacity>
+              {/* <Text style={styles.prompt}>Choose what describes you best:</Text>
+              <View style={styles.optionsContainer}>
+                <TouchableOpacity onPress={() => pressOption(0)}>
+                  {selectedOption[0] ? (
+                    <View style={styles.goalSelected}>
+                      <Text>
+                        I want to explore new things, activites and places
+                      </Text>
+                    </View>t
+                  ) : (
+                    <View style={styles.goal}>
+                      <Text>
+                        I want to explore new things, activites and places
+                      </Text>
+                    </View>
+                  )}
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => pressOption(1)}>
+                  {selectedOption[1] ? (
+                    <View style={styles.goalSelected}>
+                      <Text>
+                        I want to seek things, activites and places I already
+                        like
+                      </Text>
+                    </View>
+                  ) : (
+                    <View style={styles.goal}>
+                      <Text>
+                        I want to seek things, activites and places I already
+                        like
+                      </Text>
+                    </View>
+                  )}
+                </TouchableOpacity>
+              </View> */}
+              <Text style={styles.prompt}>
+                Select the cards you would probably do:
+              </Text>
             </View>
+          </TouchableWithoutFeedback>
+          <ChooseCardsSubSection />
+          <View>
+            <Text>If there's none click refresh. Select up to 5.</Text>
           </View>
-        </TouchableWithoutFeedback>
-        <View>
-          <Text style={styles.prompt}>
-            Select the cards you would probably do:
-          </Text>
-          <Text>If there's none click refresh. Select up to 5.</Text>
-        </View>
-        <TextInput
-          multiline
-          style={styles.input}
-          placeholder="e.g. I like netflix, coffee and going to hikes"
-          onChangeText={(val) => setUserInfo(val)}
-        />
+          <TextInput
+            multiline
+            style={styles.input}
+            placeholder="e.g. I like netflix, coffee and going to hikes"
+            onChangeText={(val) => setUserInfo(val)}
+          />
 
-        <TouchableOpacity
-          style={styles.submitButton}
-          onPress={() => {
-            RequestManager.addUser(userInfo).then(() => setInit(true));
-          }}
-        >
-          <Text style={styles.submitButtonText}> Submit </Text>
-        </TouchableOpacity>
-      </ScrollView>
-    </SafeAreaView>
+          <TouchableOpacity
+            style={styles.submitButton}
+            onPress={() => {
+              RequestManager.addUser(userInfo).then(() => setInit(true));
+            }}
+          >
+            <Text style={styles.submitButtonText}> Submit </Text>
+          </TouchableOpacity>
+        </ScrollView>
+      </SafeAreaView>
+    </CardsContextProvider>
   );
 }
 

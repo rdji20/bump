@@ -1,25 +1,23 @@
-import { Entypo, Feather, Ionicons, MaterialIcons } from "@expo/vector-icons";
-import { LinearGradient } from "expo-linear-gradient";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
 import {
-  Animated,
   Image,
-  ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
   SafeAreaView,
   FlatList,
+  ScrollView,
 } from "react-native";
-import { colors } from "../../utils/colors";
 import { HomeCardInfo } from "../sharedComponents/HomeCardInfo";
+import { CardsContext } from "../../services/cards/cards.context";
+import { ActivityIndicator, Colors } from "react-native-paper";
+
 
 export const HomeScreen = () => {
   /* 
   This is the main layout of the bumpCards screen
   */
-
+  const { isLoading, error, homeCards } = useContext(CardsContext);
   return (
     <SafeAreaView
       style={{
@@ -30,9 +28,10 @@ export const HomeScreen = () => {
     >
       <View
         style={{
-          flex: 0.1,
-          justifyContent: "center",
+          flex: 1,
           alignItems: "center",
+          paddingBottom: 50,
+          backgroundColor: "white",
         }}
       >
         <Image
@@ -40,41 +39,63 @@ export const HomeScreen = () => {
           source={require("../../images/logo_bump_spellout.png")}
         />
       </View>
-      <View style={{ flex: 0.05 }}>
-        <Text>Filters</Text>
-      </View>
-      <View
-        style={{
-          flex: 1,
-          alignItems: "center",
-        }}
-      >
-        <FlatList
-          data={[
-            { description: 1 },
-            { description: 2 },
-            { description: 3 },
-            { description: 4 },
-            { description: 5 },
-            { description: 6 },
-            { description: 7 },
-          ]}
-          style={{ paddingBottom: 55 }}
-          renderItem={() => <HomeCardInfo />}
-          keyExtractor={(item) => item.description}
-          contentContainerStyle={{}}
-          snapToAlignment={"start"}
-          decelerationRate={"fast"}
-          snapToInterval={590}
-          disableScrollViewPanResponder={true}
-        />
-      </View>
-      {/* <View style={styles.containerInsideScrollContainer}>{cards}</View> */}
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <View
+          style={{
+            flex: 0.15,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        ></View>
+        <View style={{ flex: 0.05 }}></View>
+        <View style={{ flex: 0.05 }}></View>
+        <View
+          style={{
+            flex: 1,
+            alignItems: "center",
+          }}
+        >
+          {isLoading && (
+            <View style={{ position: "absolute", top: "50%", left: "50%" }}>
+              <ActivityIndicator
+                size={50}
+                style={{ marginLeft: -25 }}
+                animating={true}
+                color={Colors.amber300}
+              />
+            </View>
+          )}
+          <View style={{ flex: 1 }}>
+            <FlatList
+              data={homeCards}
+              renderItem={({ item }) => {
+                return <HomeCardInfo card={item} />;
+              }}
+              keyExtractor={(item) => item.description}
+              contentContainerStyle={{ justifyContent: "center" }}
+              decelerationRate={"fast"}
+              //  snapToInterval={410} //This number is the height of the card + margin up and down
+            />
+          </View>
+        </View>
+        {/* <View style={styles.containerInsideScrollContainer}>{cards}</View> */}
+      </ScrollView>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  screenTitle: {
+    fontSize: 30,
+    textAlign: "center",
+    fontWeight: "bold",
+  },
+  streamsTitles: {
+    fontSize: 18,
+    textAlign: "center",
+    marginBottom: 10,
+    marginTop: 30,
+  },
   descriptionContainer: {
     width: "80%",
   },
@@ -85,16 +106,6 @@ const styles = StyleSheet.create({
 
   containerInsideScrollContainer: {
     marginTop: 10,
-  },
-
-  logoPosition: {
-    flex: 1,
-    width: "100%",
-    marginBottom: 20,
-    alignItems: "flex-start",
-    marginBottom: 50,
-    marginTop: 0,
-    flexDirection: "row",
   },
 
   mainLogo: {
@@ -112,21 +123,11 @@ const styles = StyleSheet.create({
     height: 50,
     resizeMode: "contain",
   },
-  activeTab: {
-    color: colors.orangeBump,
-    fontWeight: "bold",
-    fontSize: 18,
-    textDecorationColor: "#FE5845",
-  },
-  tabs: {
-    fontSize: 18,
-    fontWeight: "500",
-    color: "black",
-  },
   title: {
     fontSize: 24,
     fontWeight: "600",
     color: "rgb(134, 100, 246)",
+    marginTop: 20,
   },
   text: {
     fontSize: 14,
@@ -140,29 +141,9 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     paddingVertical: 5,
   },
-  nameText: {
-    fontSize: 30,
-    color: "rgb(255, 255, 255)",
-    fontWeight: "bold",
-    paddingVertical: 5,
-  },
-  buttonIcons: {
-    paddingVertical: 12,
-  },
-  contentIcons: {
-    paddingRight: 5,
-    paddingTop: 8,
-  },
   root: {
     justifyContent: "center",
     alignItems: "center",
-  },
-  title_sb: {
-    width: "100%",
-    marginTop: 20,
-    fontSize: 25,
-    fontWeight: "bold",
-    marginLeft: "10%",
   },
   searchBar: {
     height: 37,
@@ -177,10 +158,23 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     position: "relative",
   },
-  cardImage: {
-    width: "100%",
-    height: 570,
+  usersContainer: {
+    height: 90,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  userSquare: {
+    height: 70,
+    width: 70,
+    backgroundColor: "blue",
+    margin: 5,
+    borderRadius: 10,
+  },
+  mainLogo: {
+    width: 95,
+    height: 33.77,
     resizeMode: "cover",
-    borderRadius: 20,
+    marginBottom: 20,
+    marginTop: 10,
   },
 });
