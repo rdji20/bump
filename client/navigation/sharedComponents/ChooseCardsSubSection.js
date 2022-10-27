@@ -29,7 +29,7 @@ export const ChooseCardsSubSection = () => {
     false,
   ]);
 
-  const cardsToSelect = [1, 2, 3, 4];
+  const cardsToSelect = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
   console.log(homeCards[getRandomInt(max)]);
   return (
@@ -38,7 +38,7 @@ export const ChooseCardsSubSection = () => {
       contentContainerStyle={{
         padding: 16,
         flexDirection: "row",
-        justifyContent: "space-between",
+        justifyContent: "center",
         alignItems: "flex-start",
         flexWrap: "wrap",
       }}
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "center",
     alignItems: "flex-start",
     flexWrap: "wrap",
   },

@@ -147,4 +147,5 @@ async def get_recommendations(query):
         json_compatible_item_data = jsonable_encoder(response_dict)
         return JSONResponse(content=json_compatible_item_data)
 
-
+if __name__ == '__main__':
+    uvicorn.run(app, port=6000, host='0.0.0.0')
