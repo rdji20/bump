@@ -1,4 +1,3 @@
-import color from "color";
 import React, { useState } from "react";
 import {
     Image,
@@ -50,7 +49,7 @@ export const HomeCardInfo = (props) => {
                 style={styles.image}
             >
                 <LinearGradient
-                    colors={["transparent", "rgba(0, 0, 0, 0.5                                                     )"]}
+                    colors={["transparent", "rgba(0, 0, 0, 0.5)"]}
                     style={{ height: "100%", borderRadius: 15 }}
                 >
                     <View style={{ flex: 0.2 }}></View>

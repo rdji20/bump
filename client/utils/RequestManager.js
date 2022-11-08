@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import * as SecureStore from "expo-secure-store";
 
 export const localIPAddress = "192.168.86.45";
-export const flaskIpAddress = "192.168.86.133";
+export const flaskIpAddress = "192.168.86.242";
 
 /*
   This function mkaes sure to start a new "user" if the device is not registered
@@ -22,7 +22,7 @@ export async function getDeviceId(temp = false) {
         deviceId = uuidv4();
         SecureStore.setItemAsync("deviceId", deviceId);
     } else {
-        const isInDatabase = fetch(`http://192.168.86.133:5000/bumpUsers`, {
+        const isInDatabase = fetch(`http://${flaskIpAddress}:5000/bumpUsers`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -44,13 +44,12 @@ export async function getDeviceId(temp = false) {
                 console.error(error);
             });
     }
-    console.log();
     return { firstTimeUser, deviceId };
 }
 
 export async function addUser(queryString, deviceId = global.deviceId) {
     const responseHello = await fetch(
-        `http://192.168.86.133:5000/registration`,
+        `http://${flaskIpAddress}:5000/registration`,
         {
             method: "POST",
             headers: {
@@ -88,7 +87,7 @@ export async function getCards() {
         trendingCards: [],
         takeAWalk: [],
     };
-    const allCards = fetch(`http://192.168.86.133:5000/allCards`, {
+    const allCards = fetch(`http://${flaskIpAddress}:5000/allCards`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

@@ -1,9 +1,9 @@
 {
-  "expo": {
-    "name": "Bumpxp",
-    "slug": "Bumpxp",
-    "version": "0.0.1",
-    "icon": "./images/bump_icon.png",
-    "assetBundlePatterns": ["**/*"]
-  }
+    "expo": {
+        "name": "Bumpxp",
+        "slug": "Bumpxp",
+        "version": "0.0.1",
+        "icon": "./images/bump_retro.png",
+        "assetBundlePatterns": ["**/*"]
+    }
 }

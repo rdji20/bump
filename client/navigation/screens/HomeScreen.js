@@ -7,11 +7,17 @@ import {
     SafeAreaView,
     FlatList,
     ScrollView,
+    Pressable,
 } from "react-native";
 import { HomeCardInfo } from "../sharedComponents/HomeCardInfo";
 import { CardsContext } from "../../services/cards/cards.context";
 import { ActivityIndicator, Colors } from "react-native-paper";
 import * as RequestManager from "../../utils/RequestManager";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { useNavigation } from "@react-navigation/native";
+
+const RootStack = createNativeStackNavigator();
 
 export const HomeScreen = () => {
     /* 
@@ -43,7 +49,7 @@ export const HomeScreen = () => {
             setTrendingCards(
                 Object.entries(cards.allCardsStorage.trendingCards[0])
             );
-            setTakeAWalk(Object.entries(cards.allCardsStorage.takeAWalk[0]))
+            setTakeAWalk(Object.entries(cards.allCardsStorage.takeAWalk[0]));
         });
     }, []);
 
@@ -54,102 +60,136 @@ export const HomeScreen = () => {
 
     const { isLoading, error, homeCards } = useContext(CardsContext);
 
-    return (
-        <View style={{}}>
-            <ScrollView contentContainerStyle={{}}>
-                <View
-                    style={{
-                        flex: 1,
-                        marginLeft: 20,
-                        marginTop: 40,
-                        alignItems: "flex-start",
-                        flexDirection: "row",
-                    }}
-                >
-                    <Image
-                        style={styles.mainLogo}
-                        source={require("../../images/bump_icon.png")}
-                    />
-                    <Text style={styles.locationTitle}>{currentLoc}</Text>
-                </View>
-                <View
-                    style={{
-                        flex: 1,
-                        alignItems: "center",
-                        marginTop: 60,
-                        marginBottom: 60,
-                    }}
-                >
-                    <View style={{ flex: 1 }}>
-                        <Text style={styles.streamsTitles}>Active</Text>
-                        {DATA_ACTIVE_CARDS.length > 1 ? (
+    const Home = () => {
+        const navigation = useNavigation();
+
+        const onCardPress = (pressedCard) => {
+            navigation.navigate("DetailsScreen", { pressedCard });
+        };
+        return (
+            <View style={{}}>
+                <ScrollView contentContainerStyle={{}}>
+                    <View
+                        style={{
+                            flex: 1,
+                            marginLeft: 20,
+                            marginTop: 80,
+                            alignItems: "center",
+                            justifyContent: "center",
+                            flexDirection: "row",
+                        }}
+                    >
+                        <Text style={styles.locationTitle}>
+                            {" "}
+                            into experiences
+                        </Text>
+                    </View>
+                    <View
+                        style={{
+                            flex: 1,
+                            alignItems: "center",
+                            marginTop: 60,
+                            marginBottom: 60,
+                        }}
+                    >
+                        <View style={{ flex: 1, alignItems: "flex-start" }}>
+                            <Text style={styles.streamsTitles}>Active</Text>
+                            {DATA_ACTIVE_CARDS.length > 1 ? (
+                                <FlatList
+                                    horizontal={true}
+                                    showsHorizontalScrollIndicator={false}
+                                    data={DATA_ACTIVE_CARDS}
+                                    renderItem={({ item }) => {
+                                        return <HomeCardInfo card={item} />;
+                                    }}
+                                    keyExtractor={(item) => item.description}
+                                    contentContainerStyle={{
+                                        justifyContent: "center",
+                                    }}
+                                    decelerationRate={"normal"}
+                                    // snapToInterval={310} //This number is the height of the card + margin up and down
+                                />
+                            ) : (
+                                <View
+                                    style={{
+                                        flex: 1,
+                                        alignItems: "flex-start",
+                                        alignSelf: "stretch",
+                                    }}
+                                >
+                                    <Text>Choose something to do already!</Text>
+                                </View>
+                            )}
+                        </View>
+                        <View style={{ flex: 1, alignItems: "flex-start" }}>
+                            <Text style={styles.streamsTitles}>Trending</Text>
                             <FlatList
                                 horizontal={true}
                                 showsHorizontalScrollIndicator={false}
-                                data={DATA_ACTIVE_CARDS}
+                                data={DATA_TRENDING_CARDS}
                                 renderItem={({ item }) => {
-                                    return <HomeCardInfo card={item} />;
+                                    let cardKey = item[0];
+                                    let tcard = item[1];
+                                    return (
+                                        <Pressable
+                                            onPress={() => {
+                                                onCardPress(item);
+                                            }}
+                                        >
+                                            <HomeCardInfo
+                                                id={cardKey}
+                                                card={tcard}
+                                            />
+                                        </Pressable>
+                                    );
                                 }}
-                                keyExtractor={(item) => item.description}
+                                keyExtractor={(item) => item[0]}
                                 contentContainerStyle={{
                                     justifyContent: "center",
                                 }}
                                 decelerationRate={"normal"}
-                                // snapToInterval={310} //This number is the height of the card + margin up and down
+                                // snapToInterval={410} //This number is the height of the card + margin up and down
                             />
-                        ) : (
-                            <View>
-                                <Text>Choose something to do already!</Text>
-                            </View>
-                        )}
+                        </View>
+                        <View style={{ flex: 1, alignItems: "flex-start" }}>
+                            <Text style={styles.streamsTitles}>
+                                Take a walk
+                            </Text>
+                            <FlatList
+                                horizontal={true}
+                                showsHorizontalScrollIndicator={false}
+                                data={DATA_TAKE_A_WALK}
+                                renderItem={({ item }) => {
+                                    let cardKey = item[0];
+                                    let tcard = item[1];
+                                    return (
+                                        <Pressable
+                                            onPress={() => {
+                                                onCardPress(item);
+                                            }}
+                                        >
+                                            <HomeCardInfo
+                                                id={cardKey}
+                                                card={tcard}
+                                            />
+                                        </Pressable>
+                                    );
+                                }}
+                                keyExtractor={(item) => item[0]}
+                                contentContainerStyle={{
+                                    justifyContent: "center",
+                                }}
+                                decelerationRate={"normal"}
+                                // snapToInterval={410} //This number is the height of the card + margin up and down
+                            />
+                        </View>
                     </View>
-                    <View style={{ flex: 1, alignItems: "flex-start" }}>
-                        <Text style={styles.streamsTitles}>Trending</Text>
-                        <FlatList
-                            horizontal={true}
-                            showsHorizontalScrollIndicator={false}
-                            data={DATA_TRENDING_CARDS}
-                            renderItem={({ item }) => {
-                                let cardKey = item[0];
-                                let tcard = item[1];
-                                return (
-                                    <HomeCardInfo id={cardKey} card={tcard} />
-                                );
-                            }}
-                            keyExtractor={(item) => item[0]}
-                            contentContainerStyle={{
-                                justifyContent: "center",
-                            }}
-                            decelerationRate={"normal"}
-                            // snapToInterval={410} //This number is the height of the card + margin up and down
-                        />
-                    </View>
-                    <View style={{ flex: 1, alignItems: "flex-start" }}>
-                        <Text style={styles.streamsTitles}>Take a walk</Text>
-                        <FlatList
-                            horizontal={true}
-                            showsHorizontalScrollIndicator={false}
-                            data={DATA_TAKE_A_WALK}
-                            renderItem={({ item }) => {
-                                let cardKey = item[0];
-                                let tcard = item[1];
-                                return (
-                                    <HomeCardInfo id={cardKey} card={tcard} />
-                                );
-                            }}
-                            keyExtractor={(item) => item[0]}
-                            contentContainerStyle={{
-                                justifyContent: "center",
-                            }}
-                            decelerationRate={"normal"}
-                            // snapToInterval={410} //This number is the height of the card + margin up and down
-                        />
-                    </View>
-                </View>
-                {/* <View style={styles.containerInsideScrollContainer}>{cards}</View> */}
-            </ScrollView>
-        </View>
-    );
+                    {/* <View style={styles.containerInsideScrollContainer}>{cards}</View> */}
+                </ScrollView>
+            </View>
+        );
+    };
+    return <Home />;
 };
 
 const styles = StyleSheet.create({
@@ -204,37 +244,15 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
     },
-    searchBar: {
-        height: 37,
-        width: 313,
-        borderRadius: 50,
-        zIndex: 3,
-    },
-    searchBarInput: {
-        fontSize: 12,
-    },
-    cardInfoContainer: {
-        marginBottom: 20,
-        position: "relative",
-    },
-    usersContainer: {
-        height: 90,
-        flexDirection: "row",
-        alignItems: "center",
-    },
-    userSquare: {
-        height: 70,
-        width: 70,
-        backgroundColor: "blue",
-        margin: 5,
-        borderRadius: 10,
-    },
     mainLogo: {
-        width: 40,
+        // width: 60.2 * 1.5,
+        // height: 21 * 1.5,
+        width: 50,
         height: 50,
         resizeMode: "cover",
         marginBottom: 20,
-        marginTop: 10,
+        marginTop: 22,
+        marginRight: 2,
     },
     locationTitle: {
         fontSize: 28,

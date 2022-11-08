@@ -58,15 +58,6 @@ export const ProfileInfo = () => {
       <Text>
         @infa
       </Text>
-      <Text>
-        UW Alumn, founder bump
-      </Text>
-      <Text>
-        From: Monterrey, Mx
-      </Text>
-      <Text>
-        Current city: Seattle [Change?]
-      </Text>
     </View>
   );
 }

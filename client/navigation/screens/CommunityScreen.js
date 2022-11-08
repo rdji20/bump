@@ -1,27 +1,47 @@
-import color from "color";
 import React from "react";
 import { Button } from "react-native";
-import {
-    Text,
-    SafeAreaView,
-    FlatList,
-    ScrollView,
-    StyleSheet,
-    StatusBar,
-    View,
-    Image,
-} from "react-native";
+import { Text, SafeAreaView, ScrollView, StyleSheet, View } from "react-native";
 import { colors } from "../../utils/colors";
-// import { createStackNavigator } from '@react-navigation/stack';
+// import { NavigationContainer } from '@react-navigation/native';
+// import { createNativeStackNavigator } from '@react-navigation/native-stack';
+// import { AddNewPost } from '../sharedComponents/NewPost/AddNewPost';
+// import FormikPostUploader from '../sharedComponents/NewPost/FormitPostUploader'
 
-// const Stack = createStackNavigator();
+// function CreateNewCard() {
+//     return(
+//         <ScrollView>
+//             <SafeAreaView style={{ flex: 1}}>
+//                 <AddNewPost />
+//                 <FormikPostUploader />
+//             </SafeAreaView>
+//         </ScrollView>
+//     );
+// }
+
+// function Activity({navigation}) {
+//     return(
+//         <View style={styles.header}>
+//             <Text style={styles.pageTitle}>Activity</Text>
+//             <Button title="create card" onPress={() =>
+//                 navigation.navigate('CreateExperience')
+//             } />
+//         </View>
+//     );
+// }
+
+// const Stack = createNativeStackNavigator();
 
 export const CommunityScreen = () => {
     return (
+        // <NavigationContainer independent={true}>
+        //     <Stack.Navigator>
+        //         <Stack.Screen name="Activity" component={Activity}/>
+        //         <Stack.Screen name="CreateExperience" component={CreateNewCard} />
+        //     </Stack.Navigator>
+        // </NavigationContainer>
         <SafeAreaView>
             <View style={styles.header}>
                 <Text style={styles.pageTitle}>Activity</Text>
-                <Button title="create card" />
             </View>
         </SafeAreaView>
     );
